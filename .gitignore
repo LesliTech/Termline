@@ -44,4 +44,4 @@ brakeman.html
 /tmp/
 
 # Ignore Lesli gems
-lesli*.gem
+*.gem
