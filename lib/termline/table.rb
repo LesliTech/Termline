@@ -31,20 +31,19 @@ module Termline
 
             # add extra blank spaces to adjust the col_width only if col_width not a even number
             separator += (' ') if (col_width - separator.size).odd?
-        
+
+            # only for table header
+            if header
+
+                # print table titles
+                puts '| ' << data.first.keys.map { |key| key.to_s.upcase.ljust(col_width) }.join('| ')
+            end 
+
+            # print header separators, only for visible columns
+            puts separator * (cols - 1)
+
             # print data as table :)
             data.each_with_index do |row, index|
-
-                # only for table header
-                if index == 0 && header
-
-                    # print table titles
-                    puts '| ' << row.keys.map { |key| key.to_s.upcase.ljust(col_width) }.join('| ')
-
-                    # print header separators, only for visible columns
-                    puts separator * (cols - 1)
-
-                end 
 
                 # join hash values as a line and justify every value to print value in its own column
                 puts '| ' << row.values.map { |value| value.to_s.ljust(col_width) }.join('| ') unless table_from_array
@@ -52,6 +51,8 @@ module Termline
                 # print simple value from the array data
                 puts '| ' << row.map { |value| value.to_s.ljust(col_width) }.join('| ') if table_from_array
             end
+
+            puts separator * (cols - 1) unless header
         end
     end
 end

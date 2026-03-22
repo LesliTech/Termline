@@ -57,10 +57,6 @@ module Termline
         messages.each { |message| Termline::Msg.builder(message, tag:tag, icon:icon, data:data, color: :green) }
     end
 
-    def self.success2 *messages, tag:'SUCCESS:', icon: :success, **data
-        messages.each { |message| Termline::Msg.builder(message, tag:tag, icon:icon, data:data, color: :green) }
-    end
-
     def self.warning *messages, tag:'WARNING:', icon: :warning, **data
         messages.each { |message| Termline::Msg.builder(message, tag:tag, icon:icon,  data:data, color: :yellow) }
     end

@@ -41,8 +41,7 @@ Termline.list("four", "five", "six", color: :yellow)
 Termline.br
 Termline.list("four", "five", "six", color: :green, icon: :star)
 
-Termline.br
-Termline.br
+Termline.br 2
 
 Termline.table(
     [
@@ -52,31 +51,17 @@ Termline.table(
     ]
 )
 
-Termline.br
-Termline.br
+Termline.br 2
 
 Termline.table(
   [
     { endpoint: "/users", method: "GET", status: 200, time: "45ms" },
     { endpoint: "/users", method: "POST", status: 201, time: "82ms" },
     { endpoint: "/login", method: "POST", status: 401, time: "17ms" }
-  ]
+  ], header: false
 )
 
-
-Termline.br
-Termline.br
-
-Termline.table(
-    [
-        { first_name: "Luis", last_name: "Donis", title: "software developer" },
-        { first_name: "Luis", last_name: "Donis", title: "software developer" },
-        { first_name: "Luis", last_name: "Donis", title: "software developer" },
-    ], header: false
-)
-
-Termline.br
-Termline.br
+Termline.br 2
 
 Termline.table([
     ["Luis", "Admin", "Active"],
