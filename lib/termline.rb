@@ -45,23 +45,27 @@ module Termline
         messages.each { |message| puts(message) }
     end
 
-    def self.msg (*messages, data:nil)
+    def self.msg (*messages, **data)
         messages.each { |message| Termline::Msg.builder(message, data:data) }
     end
 
-    def self.info *messages, tag:'INFO:', icon: :info, data:nil
+    def self.info *messages, tag:'INFO:', icon: :info, **data
         messages.each { |message| Termline::Msg.builder(message, tag:tag, icon:icon,  data:data, color: :blue) }
     end
 
-    def self.success *messages, tag:'SUCCESS:', icon: :success, data:nil
+    def self.success *messages, tag:'SUCCESS:', icon: :success, **data
         messages.each { |message| Termline::Msg.builder(message, tag:tag, icon:icon, data:data, color: :green) }
     end
 
-    def self.warning *messages, tag:'WARNING:', icon: :warning, data:nil
+    def self.success2 *messages, tag:'SUCCESS:', icon: :success, **data
+        messages.each { |message| Termline::Msg.builder(message, tag:tag, icon:icon, data:data, color: :green) }
+    end
+
+    def self.warning *messages, tag:'WARNING:', icon: :warning, **data
         messages.each { |message| Termline::Msg.builder(message, tag:tag, icon:icon,  data:data, color: :yellow) }
     end
 
-    def self.danger *messages, tag:'DANGER:', icon: :error, data:nil
+    def self.danger *messages, tag:'DANGER:', icon: :error, **data
         messages.each { |message| Termline::Msg.builder(message, tag:tag, icon:icon,  data:data, color: :red) }
     end
 

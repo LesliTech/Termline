@@ -7,10 +7,9 @@ module Termline
                 message, 
                 tag: nil,
                 icon: nil,
-                data: nil,
                 color: :default, 
                 bgcolor: :default, 
-                timestamp: Time.now.strftime('%H:%M:%S:%L'))
+                timestamp: Time.now.strftime('%H:%M:%S:%L'), data:nil)
 
                 parts = []
                 parts << "[#{timestamp}]" if timestamp
