@@ -42,6 +42,7 @@ Termline.br
 Termline.list("four", "five", "six", color: :green, icon: :star)
 
 Termline.br
+Termline.br
 
 Termline.table(
     [
@@ -51,5 +52,22 @@ Termline.table(
     ]
 )
 
-# # Termline.br 
-# # Termline.br 
+Termline.br
+Termline.br
+
+Termline.table(
+    [
+        { first_name: "Luis", last_name: "Donis", title: "software developer" },
+        { first_name: "Luis", last_name: "Donis", title: "software developer" },
+        { first_name: "Luis", last_name: "Donis", title: "software developer" },
+    ], header: false
+)
+
+Termline.br
+Termline.br
+
+Termline.table([
+    ["Luis", "Admin", "Active"],
+    ["Ana", "Developer", "Pending"],
+    ["Marco", "Support", "Disabled"]
+])

@@ -6,22 +6,18 @@ module Termline
             return if Gem.win_platform?
             return unless data.size > 0
 
+            table_from_array = true if data.first.class == Array
+            header = false if table_from_array
+
             if data.class.name == "ActiveRecord::Relation"
                 data = data.to_a.map(&:serializable_hash) 
             end
 
             # get the available characters in terminal width
             #terminal_width = `tput cols`.to_i
-            terminal_width = Config::WIDTH
+            terminal_width = Style::WIDTH
 
             # get the number of columns to print base on the data hash
-
-            pp "--------------------------"
-            pp "--------------------------"
-            header = false if data.first.class == Array
-            pp "--------------------------"
-            pp "--------------------------"
-
             cols = data.first.length + 1
 
             # get the available space for every column
@@ -50,11 +46,11 @@ module Termline
 
                 end 
 
-                # join hash values as a line and justify every value to print value
-                # in its own column
-                puts '| ' << row.values.map { |value| value.to_s.ljust(col_width) }.join('| ')
-                #puts '| ' << row.map { |value| value.to_s.ljust(col_width) }.join('| ')
+                # join hash values as a line and justify every value to print value in its own column
+                puts '| ' << row.values.map { |value| value.to_s.ljust(col_width) }.join('| ') unless table_from_array
 
+                # print simple value from the array data
+                puts '| ' << row.map { |value| value.to_s.ljust(col_width) }.join('| ') if table_from_array
             end
         end
     end
