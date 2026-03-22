@@ -1,145 +1,76 @@
-<p align="center">
-	<a href="https://www.lesli.dev" target="_blank">
-		<img alt="Lesli Ruby Message logo" width="200px" src="./docs/l2-logo.svg" />
-	</a>
-</p>
-<h3 align="center">Message utilities for the Ruby console</h3>
+<div align="center" class="documentation-header">
+    <img width="100" alt="LesliTesting logo" src="./docs/images/termline-logo.svg" />
+    <h3 align="center">Human-friendly terminal logs for the Lesli Platform</h3>
+</div>
 
-Version 0.5.2
-
-## Installation
-
-Install the gem and add to the application's Gemfile by executing:
-
-    $ bundle add l2
-
-If bundler is not being used to manage dependencies, install the gem by executing:
-
-    $ gem install l2
-
-Rails apps
-
-    $ gem "L2", "~> 0.4.0"
-
-## Usage
+<br />
+<hr/>
+<br />
 
 
-**Simple message:**
+### Quick start
 
-```ruby
-L2.m("hola")
-L2.m("hola", "hello", "hallo", 1, [2], {"a":"b"})
+```shell
+# Add LesliAdmin engine gem
+bundle add termline
 ```
 
-
-**Simple message with dividing line:**
-
+### Usage 
 ```ruby
-L2.msg("hola")
-L2.msg("hola", "hello", "hallo", 1, [2], {"a":"b"})
+Termline.br
+Termline.m("Simple message")
+Termline.msg("Message with data:", data:{ name: "Luis", last_name: "Donis", title: "Software developer"})
+Termline.info("Message with data:", data:{ name: "Luis", last_name: "Donis", title: "Software developer"})
+Termline.success("Message with data:", data:{ name: "Luis", last_name: "Donis", title: "Software developer"})
+Termline.warning("Message with data:", data:{ name: "Luis", last_name: "Donis", title: "Software developer"})
+Termline.danger("Message with data:", data:{ name: "Luis", last_name: "Donis", title: "Software developer"})
 ```
 
+**Result:** 
 
-**Informative message:**
-
-```ruby
-L2.info("hola")
-L2.info("hola", "hello", "hallo", 1, [2], {"a":"b"})
-```
+<img  alt="LesliTesting logo" src="./docs/images/screenshot.png" />
 
 
-**Sucessful message:**
-
-```ruby
-L2.success("hola")
-L2.success("hola", "hello", "hallo", 1, [2], {"a":"b"})
-```
+### Documentation
+* [website](https://www.lesli.dev/)
+* [documentation](https://www.lesli.dev/gems/termline/)
 
 
-**Simple message:**
+### Connect with Lesli
 
-```ruby
-L2.warning("hola")
-L2.warning("hola", "hello", "hallo", 1, [2], {"a":"b"})
-```
-
-
-**Error message:**
-
-```ruby
-L2.danger("hola")
-L2.danger("hola", "hello", "hallo", 1, [2], {"a":"b"})
-```
+* [X: @LesliTech](https://x.com/LesliTech)
+* [Email: hello@lesli.tech](hello@lesli.tech)
+* [Website: https://www.lesli.tech](https://www.lesli.tech)
 
 
-**Error with flashing message:**
+### License
+-------
+Copyright (c) 2026, Lesli Technologies, S. A.
 
-```ruby
-L2.fatal("hola")
-L2.fatal("hola", "hello", "hallo", 1, [2], {"a":"b"})
-```
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
 
-**Flashing message:**
+You should have received a copy of the GNU General Public License
+along with this program. If not, see http://www.gnu.org/licenses/.
 
-```ruby
-L2.alert("hola")
-L2.alert("hola", "hello", "hallo", 1, [2], {"a":"b"})
-```
+<br />
+<hr />
+<br />
+<br />
 
+<div align="center" class="has-text-centered">
+    <img width="200" alt="Lesli logo" src="https://cdn.lesli.tech/lesli/brand/app-logo.svg" />
+    <h3 align="center" class="mt-0">
+        The Open-Source SaaS Development Framework for Ruby on Rails.
+    </h3>
+</div>
 
-**Useful to give instructions in deprecated methods or code:**
-
-```ruby
-L2.deprecation("hola")
-```
-
-
-**Print a simple list:**
-
-```ruby
-L2.list("hola", "hello", "hallo", 1, [2], {"a":"b"})
-```
-
-
-**Show data as table:**
-
-```ruby
-L2.table([
-    { español: "hola", english: "hello", deutsch: "hallo" },
-    { español: "hola", english: "hello", deutsch: "hallo" },
-    { español: "hola", english: "hello", deutsch: "hallo" }
-])
-```
-
-
-**Display a cow message:**
-
-```ruby
-L2.cow("Hello little cow!")
-```
-
-
-### Development
-------
-
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
-
-### Contributing
-------
-
-Bug reports and pull requests are welcome on GitHub at https://github.com/LesliTech/l2.
-
-
-### License  
-------
-
-Software developed in [Guatemala](http://visitguatemala.com/) distributed under the *General Public License v 3.0* you can read the full license [here](http://www.gnu.org/licenses/gpl-3.0.html)
-
-<p align="center">
-	<a href="https://www.lesli.tech" target="_blank">
-		<img alt="LesliTech logo" width="150" src="https://cdn.lesli.tech/leslitech/brand/leslitech-logo.svg" />
-	</a>
-</p>
+<br />
+<br />

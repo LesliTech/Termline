@@ -1,6 +1,8 @@
 =begin
 
-Copyright (c) 2022, Lesli Technologies, S. A.
+Lesli
+
+Copyright (c) 2026, Lesli Technologies, S. A.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -13,68 +15,61 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program. If not, see <http://www.gnu.org/licenses/>.
+along with this program. If not, see http://www.gnu.org/licenses/.
 
-Lesli Ruby Messages - Message utilities for the Ruby console
+Lesli · Ruby on Rails SaaS Development Framework.
 
-Powered by https://www.lesli.tech
+Made with ♥ by LesliTech
 Building a better future, one line of code at a time.
 
-@contact  <hello@lesli.tech>
-@website  <https://www.lesli.tech>
+@contact  hello@lesli.tech
+@website  https://www.lesli.tech
 @license  GPLv3 http://www.gnu.org/licenses/gpl-3.0.en.html
-@author   The Lesli Development Team
 
-// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
 // · 
 =end
 
-require "termline/config"
-require "termline/table"
-require "termline/space"
-require "termline/list"
-require "termline/msg"
-require "termline/banner"
+require_relative "termline/style"
+require_relative "termline/table"
+require_relative "termline/space"
+require_relative "termline/list"
+require_relative "termline/msg"
+require_relative "termline/banner"
 
 
 # ·
 module Termline
 
     def self.m *messages
-        messages.each { |message| Termline::Msg.msg(message) }
+        messages.each { |message| puts(message) }
     end
 
-    def self.msg (*messages)
-        messages.each { |message| Termline::Msg.builder(message) }
+    def self.msg (*messages, data:nil)
+        messages.each { |message| Termline::Msg.builder(message, data:data) }
     end
 
-    def self.info *messages
-        messages.each { |message| Termline::Msg.info(message) }
+    def self.info *messages, tag:'INFO:', icon: :info, data:nil
+        messages.each { |message| Termline::Msg.builder(message, tag:tag, icon:icon,  data:data, color: :blue) }
     end
 
-    def self.success *messages
-        messages.each { |message| Termline::Msg.success(message) }
+    def self.success *messages, tag:'SUCCESS:', icon: :success, data:nil
+        messages.each { |message| Termline::Msg.builder(message, tag:tag, icon:icon, data:data, color: :green) }
     end
 
-    def self.warning *messages
-        Termline::Msg.warning(messages)
+    def self.warning *messages, tag:'WARNING:', icon: :warning, data:nil
+        messages.each { |message| Termline::Msg.builder(message, tag:tag, icon:icon,  data:data, color: :yellow) }
     end
 
-    def self.danger *messages
-        Termline::Msg.danger(messages)
+    def self.danger *messages, tag:'DANGER:', icon: :error, data:nil
+        messages.each { |message| Termline::Msg.builder(message, tag:tag, icon:icon,  data:data, color: :red) }
     end
 
     def self.alert *messages
-        Termline::Msg.alert(messages)
+        messages.each { |message| Termline::Msg.alert(message) }
     end
 
-    def self.warn *messages
-        warning(messages)
-    end
 
-    def self.error *messages
-        Termline::Msg.danger(messages)
-    end
 
 
     def self.list *items

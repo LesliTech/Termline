@@ -1,32 +1,47 @@
 
 module Termline
     module Msg 
-        def self.msg messages
-            puts(message)
-        end
+        class << self
 
-        def self.builder message, tag: 'MSG', color: :default
-            puts(Config.pretty("#{tag} #{ message }", color))
-        end
-    
-        def self.info message
-            builder(message, tag:'INFO:', color: :blue)
-        end
+            def builder(
+                message, 
+                tag: nil,
+                icon: nil,
+                data: nil,
+                color: :default, 
+                bgcolor: :default, 
+                timestamp: Time.now.strftime('%H:%M:%S:%L'))
 
-        def self.success message
-            builder(message, tag:'SUCCESS:', color: :green)
-        end
+                parts = []
+                parts << "[#{timestamp}]" if timestamp
+                parts << Style.colorize(Style.icon(icon), color) if icon
+                parts << Style.colorize(tag, color) if tag
+                parts << message
+                parts << data_text(data, color) if data
 
-        def self.warning messages
-            messages.each { |message| puts(Config.pretty("WARNING: #{ message }", :yellow)) }
-        end
+                puts(parts.compact.map(&:to_s).reject(&:empty?).join(" ").strip)
+            end
 
-        def self.danger messages
-            messages.each { |message| puts(Config.pretty("ERROR: #{ message }", :red)) }
-        end
+            def alert message
+                puts("\e[5m#{message}\e[0m")
+                puts("\e[5m#{Style.colorize(message,:red)}\e[0m")
+            end
 
-        def self.alert messages
-            messages.each { |message| puts("\e[5m#{message}\e[0m") }
+            private 
+
+            def format_value(value)
+                case value
+                when String
+                    value.include?(" ") ? value.inspect : value
+                else
+                    value.inspect
+                end
+            end
+
+            def data_text(data, color)
+                return nil if data.nil? || data.empty?
+                data.map { |key, value| "#{key}#{Style.colorize('=>', color)}#{format_value(value)}" }.join(" ")            
+            end
         end
     end
 end

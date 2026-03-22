@@ -1,11 +1,15 @@
 
 
 module Termline 
-    module Config 
+    module Style 
 
+        # Available icons
         ICONS = {
-            checkmark: "✓",
-            bullet: "•",
+            warning: "⚠",
+            success: "✔",
+            debug: "•",
+            error: "✖",
+            info: "ℹ",
             star: "★"
         }.freeze
     
@@ -35,7 +39,6 @@ module Termline
     
         # calculate the console width
         # tputcols is not available on windows
-        #WIDTH = `tput cols`.to_i rescue WIDTH = 1;
         WIDTH = begin
             term = ENV['TERM']
             term ? `tput cols`.to_i : 1
@@ -43,6 +46,11 @@ module Termline
             1
         end
 
+        def self.icon icon
+            ICONS[icon]
+        end
+
+        # Concat color to text
         def self.colorize(text, colour = :default, bg_colour = :default)
             colour_code = COLORS[colour]
             bg_colour_code = BG_COLORS[bg_colour]
@@ -58,7 +66,7 @@ module Termline
                 width = 1 if width.negative?
             end
     
-            return colorize("\ \ #{ message } #{"\ " * width}", colour, bg_colour)
+            return colorize("#{ message } #{"\ " * width}", colour, bg_colour)
         end
     end 
 end

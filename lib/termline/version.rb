@@ -30,6 +30,6 @@ Building a better future, one line of code at a time.
 =end
 
 module Termline
-    VERSION = "0.1.0"
-    BUILD = "1774159419"
+    VERSION = "0.2.0"
+    BUILD = "1774211535"
 end
