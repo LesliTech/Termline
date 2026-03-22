@@ -32,37 +32,24 @@ Termline.danger("Simple message")
 Termline.danger("Message with data:", data:{ name: "Luis", last_name: "Donis", title: "Software developer"})
 
 
-# # Termline.br
+Termline.br
+Termline.list("one", "two", "three")
 
-# # Termline.list("one")
-# # Termline.list("one", "two", "three")
-# # Termline.list(*["one", "two", "three"])
+Termline.br
+Termline.list("four", "five", "six", color: :yellow)
 
-# # Termline.br
+Termline.br
+Termline.list("four", "five", "six", color: :green, icon: :star)
 
-# # Termline.list_check("one")
-# # Termline.list_check("one", "two", "three")
-# # Termline.list_check(*["one", "two", "three"])
+Termline.br
 
-# # Termline.br
-
-# # Termline.list_star("one")
-# # Termline.list_star("one", "two", "three")
-# # Termline.list_star(*["one", "two", "three"])
-
-# # Termline.br
-
-# # Termline.alert("one")
-
-# # Termline.br
-
-# # Termline.table(
-# #     [
-# #         { first_name: "Luis", last_name: "Donis", title: "software developer" },
-# #         { first_name: "Luis", last_name: "Donis", title: "software developer" },
-# #         { first_name: "Luis", last_name: "Donis", title: "software developer" },
-# #     ]
-# # )
+Termline.table(
+    [
+        { first_name: "Luis", last_name: "Donis", title: "software developer" },
+        { first_name: "Luis", last_name: "Donis", title: "software developer" },
+        { first_name: "Luis", last_name: "Donis", title: "software developer" },
+    ]
+)
 
 # # Termline.br 
 # # Termline.br 

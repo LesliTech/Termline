@@ -1,17 +1,8 @@
 
 module Termline 
     module List 
-
-        def self.bullet *items
-            items.each { |item| puts(" #{Config::ICONS[:bullet]} #{ item }" )}
-        end
-    
-        def self.check *items
-            items.each { |item| puts(" #{Config::ICONS[:checkmark]} #{ item }" )}
-        end
-    
-        def self.star *items
-            items.each { |item| puts(" #{Config::ICONS[:star]} #{ item }" )}
+        def self.builder(items, icon:, color:)
+            items.each { |item| puts("  #{Style.colorize(Style.icon(icon), color)} #{ item }" )}
         end
     end
 end 

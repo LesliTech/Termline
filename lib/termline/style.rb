@@ -21,6 +21,7 @@ module Termline
             white: '1;37', 
             green: '32',  
             black: '30', 
+            gray: '90',
             blue: '36', 
             red: '31'
         }.freeze

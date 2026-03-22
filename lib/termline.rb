@@ -70,18 +70,8 @@ module Termline
     end
 
 
-
-
-    def self.list *items
-        Termline::List.bullet(items)
-    end
-
-    def self.list_check *items
-        Termline::List.check(items)
-    end
-
-    def self.list_star *items
-        Termline::List.star(items)
+    def self.list *items, color: :default, icon: :debug
+        Termline::List.builder(items, color:color, icon:icon)
     end
 
 
