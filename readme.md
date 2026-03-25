@@ -17,13 +17,18 @@ bundle add termline
 
 ### Usage 
 ```ruby
+Termline.msg "Hello world"
+Termline.info "Server started"
+Termline.success "All tests passed"
+Termline.warning "Low disk space"
+Termline.danger "Something failed"
+
 Termline.br
-Termline.m("Simple message")
-Termline.msg("Message with data:", data:{ name: "Luis", last_name: "Donis", title: "Software developer"})
-Termline.info("Message with data:", data:{ name: "Luis", last_name: "Donis", title: "Software developer"})
-Termline.success("Message with data:", data:{ name: "Luis", last_name: "Donis", title: "Software developer"})
-Termline.warning("Message with data:", data:{ name: "Luis", last_name: "Donis", title: "Software developer"})
-Termline.danger("Message with data:", data:{ name: "Luis", last_name: "Donis", title: "Software developer"})
+
+Termline.table([
+  { name: "Luis", role: "Admin", status: "Active" },
+  { name: "Ana", role: "Developer", status: "Pending" }
+])
 ```
 
 **Result:** 

@@ -1,0 +1,7 @@
+<%= navigation_for_folder("gems", "termline", "about") %>
+<%= navigation_for_files([
+    "/gems/termline/messages",
+    "/gems/termline/tables",
+    "/gems/termline/lists",
+    "/gems/termline/separators"
+]) %>
