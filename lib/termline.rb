@@ -35,63 +35,63 @@ require_relative "termline/table"
 require_relative "termline/space"
 require_relative "termline/list"
 require_relative "termline/msg"
-require_relative "termline/banner"
 
 
 # ·
 module Termline
+    class << self
+        def m(*messages)
+            messages.each { |message| puts(message) }
+        end
 
-    def self.m *messages
-        messages.each { |message| puts(message) }
-    end
+        def msg(*messages, **data)
+            messages.each { |message| puts(Termline::Msg.builder(message, data:data)) }
+        end
 
-    def self.msg (*messages, **data)
-        messages.each { |message| Termline::Msg.builder(message, data:data) }
-    end
+        def info(*messages, tag:'INFO:', icon: :info, **data)
+            messages.each { |message| puts(Termline::Msg.builder(message, tag:tag, icon:icon,  data:data, color: :blue)) }
+        end
 
-    def self.info *messages, tag:'INFO:', icon: :info, **data
-        messages.each { |message| Termline::Msg.builder(message, tag:tag, icon:icon,  data:data, color: :blue) }
-    end
+        def success(*messages, tag:'SUCCESS:', icon: :success, **data)
+            messages.each { |message| puts(Termline::Msg.builder(message, tag:tag, icon:icon, data:data, color: :green)) }
+        end
 
-    def self.success *messages, tag:'SUCCESS:', icon: :success, **data
-        messages.each { |message| Termline::Msg.builder(message, tag:tag, icon:icon, data:data, color: :green) }
-    end
+        def warning(*messages, tag:'WARNING:', icon: :warning, **data)
+            messages.each { |message| puts(Termline::Msg.builder(message, tag:tag, icon:icon,  data:data, color: :yellow)) }
+        end
 
-    def self.warning *messages, tag:'WARNING:', icon: :warning, **data
-        messages.each { |message| Termline::Msg.builder(message, tag:tag, icon:icon,  data:data, color: :yellow) }
-    end
+        def danger(*messages, tag:'DANGER:', icon: :error, **data)
+            messages.each { |message| puts(Termline::Msg.builder(message, tag:tag, icon:icon,  data:data, color: :red)) }
+        end
 
-    def self.danger *messages, tag:'DANGER:', icon: :error, **data
-        messages.each { |message| Termline::Msg.builder(message, tag:tag, icon:icon,  data:data, color: :red) }
-    end
-
-    def self.alert *messages
-        messages.each { |message| Termline::Msg.alert(message) }
-    end
-
-
-    def self.list *items, color: :default, icon: :debug
-        Termline::List.builder(items, color:color, icon:icon)
-    end
+        def alert(*messages)
+            messages.each { |message| puts(Termline::Msg.alert(message)) }
+        end
 
 
-    def self.table data, header:true
-        Termline::Table.simple(data, header:header)
-    end
-
-    def self.br count=1
-        Termline::Space.br(count)
-    end 
-
-    def self.line count=8
-        Termline::Space.line(count)
-    end
-
-    def self.color color
-        Termline::Space.color(count)
-    end
+        def list(*items, color: :default, icon: :debug)
+            Termline::List.builder(items, color:color, icon:icon)
+        end
 
 
-    def self.deprecation message
+        def table(data, header:true)
+            Termline::Table.builder(data, header:header)
+        end
+
+        def br(count=1)
+            puts(Termline::Space.builder("\n", count))
+        end 
+
+        def line(count=8)
+            puts(Termline::Space.builder('-·-     ', count))
+        end
+
+        def color(color)
+            Termline::Space.color(count)
+        end
+
+
+        def deprecation message
+        end
     end
 end

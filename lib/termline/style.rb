@@ -1,4 +1,34 @@
+=begin
 
+Lesli
+
+Copyright (c) 2026, Lesli Technologies, S. A.
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see http://www.gnu.org/licenses/.
+
+Lesli · Ruby on Rails SaaS Development Framework.
+
+Made with ♥ by LesliTech
+Building a better future, one line of code at a time.
+
+@contact  hello@lesli.tech
+@website  https://www.lesli.tech
+@license  GPLv3 http://www.gnu.org/licenses/gpl-3.0.en.html
+
+// · ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~     ~·~
+// · 
+=end
 
 module Termline 
     module Style 
@@ -47,27 +77,29 @@ module Termline
             1
         end
 
-        def self.icon icon
-            ICONS[icon]
-        end
-
-        # Concat color to text
-        def self.colorize(text, colour = :default, bg_colour = :default)
-            colour_code = COLORS[colour]
-            bg_colour_code = BG_COLORS[bg_colour]
-            return "\e[#{bg_colour_code};#{colour_code}m#{text}\e[0m".squeeze(';')
-        end
-        
-    
-        def self.pretty(message, colour = :default, bg_colour = :default)
-            width = 1
-    
-            unless bg_colour == :default
-                width = WIDTH - message.length - 4
-                width = 1 if width.negative?
+        class << self 
+            def icon icon
+                ICONS[icon]
             end
-    
-            return colorize("#{ message } #{"\ " * width}", colour, bg_colour)
+
+            # Concat color to text
+            def colorize(text, colour = :default, bg_colour = :default)
+                colour_code = COLORS[colour]
+                bg_colour_code = BG_COLORS[bg_colour]
+                return "\e[#{bg_colour_code};#{colour_code}m#{text}\e[0m".squeeze(';')
+            end
+
+            # Format text
+            def pretty(message, colour = :default, bg_colour = :default)
+                width = 1
+        
+                unless bg_colour == :default
+                    width = WIDTH - message.length - 4
+                    width = 1 if width.negative?
+                end
+        
+                return colorize("#{ message } #{"\ " * width}", colour, bg_colour)
+            end
         end
     end 
 end
