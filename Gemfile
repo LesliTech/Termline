@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 =begin
 
 Copyright (c) 2022, Lesli Technologies, S. A.
@@ -29,11 +31,11 @@ Building a better future, one line of code at a time.
 // · 
 =end
 
-# frozen_string_literal: true
 source "https://rubygems.org"
 
-# · Specify your gem's dependencies in l2.gemspec
+# Specify your gem's dependencies in Termline.gemspec
 gemspec
 
-# · 
-gem "rspec", "~> 3.0"
+gem "rake", "~> 13.0"
+
+gem "minitest", "~> 5.0"
