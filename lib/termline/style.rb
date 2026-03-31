@@ -40,7 +40,9 @@ module Termline
             debug: "•",
             error: "✖",
             info: "ℹ",
-            star: "★"
+            star: "★",
+            add: "+",
+            remove: "-"
         }.freeze
     
         # standard color palette for texts
