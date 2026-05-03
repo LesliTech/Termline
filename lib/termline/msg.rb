@@ -40,10 +40,12 @@ module Termline
                 icon: nil,
                 color: :default, 
                 bgcolor: :default, 
-                timestamp: Time.now.strftime('%H:%M:%S:%L'), data:nil)
+                timestamp: Time.now.strftime('%H:%M:%S:%L'), 
+                time:true,
+                data:nil)
 
                 parts = []
-                parts << "[#{timestamp}]" if timestamp
+                parts << "[#{timestamp}]" if time
                 parts << Style.colorize(Style.icon(icon), color) if icon
                 parts << Style.colorize(tag, color) if tag
                 parts << message

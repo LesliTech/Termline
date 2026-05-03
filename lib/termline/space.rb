@@ -33,7 +33,7 @@ Building a better future, one line of code at a time.
 module Termline 
     module Space 
         class << self
-            def builder(character, count)
+            def builder(character, count=8)
                 character * count
             end
             def br count=1

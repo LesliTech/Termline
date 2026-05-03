@@ -30,6 +30,8 @@ Building a better future, one line of code at a time.
 // · 
 =end
 
+
+# ·
 require_relative "termline/style"
 require_relative "termline/table"
 require_relative "termline/space"
@@ -48,20 +50,20 @@ module Termline
             messages.each { |message| puts(Termline::Msg.builder(message, data:data)) }
         end
 
-        def info(*messages, tag:'INFO:', icon: :info, **data)
-            messages.each { |message| puts(Termline::Msg.builder(message, tag:tag, icon:icon,  data:data, color: :blue)) }
+        def info(*messages, tag:'INFO:', icon: :info, time:true, **data)
+            messages.each { |message| puts(Termline::Msg.builder(message, tag:tag, icon:icon,  data:data, color: :blue, time:time)) }
         end
 
-        def success(*messages, tag:'SUCCESS:', icon: :success, **data)
-            messages.each { |message| puts(Termline::Msg.builder(message, tag:tag, icon:icon, data:data, color: :green)) }
+        def success(*messages, tag:'SUCCESS:', icon: :success, time:true, **data)
+            messages.each { |message| puts(Termline::Msg.builder(message, tag:tag, icon:icon, data:data, color: :green, time:time)) }
         end
 
-        def warning(*messages, tag:'WARNING:', icon: :warning, **data)
-            messages.each { |message| puts(Termline::Msg.builder(message, tag:tag, icon:icon,  data:data, color: :yellow)) }
+        def warning(*messages, tag:'WARNING:', icon: :warning, time:true, **data)
+            messages.each { |message| puts(Termline::Msg.builder(message, tag:tag, icon:icon,  data:data, color: :yellow, time:time)) }
         end
 
-        def danger(*messages, tag:'DANGER:', icon: :error, **data)
-            messages.each { |message| puts(Termline::Msg.builder(message, tag:tag, icon:icon,  data:data, color: :red)) }
+        def danger(*messages, tag:'DANGER:', icon: :error, time:true, **data)
+            messages.each { |message| puts(Termline::Msg.builder(message, tag:tag, icon:icon,  data:data, color: :red, time:time)) }
         end
 
         def alert(*messages)
