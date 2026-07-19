@@ -1,29 +1,96 @@
-<div align="center" class="documentation-header">
-    <img width="100" alt="LesliTesting logo" src="./docs/images/termline-logo.svg" />
-    <h3 align="center">Human-friendly terminal logs for the Lesli Platform</h3>
+<div align="center">
+    <h1 align="center">
+        <img width="100" alt="Termline" src="./docs/images/termline-logo.svg" />
+    </h1>
+    <h3 align="center">Human-friendly terminal output for Ruby applications.</h3>
 </div>
 
 <br />
-<hr/>
+
+<div align="center">
+    <a target="_blank" href="https://github.com/LesliTech/Termline/actions/workflows/master.yml">
+        <img alt="Termline test status" src="https://img.shields.io/github/actions/workflow/status/LesliTech/Termline/master.yml?branch=main&style=for-the-badge&logo=github&label=tests">
+    </a>
+    <a target="_blank" href="https://rubygems.org/gems/termline">
+        <img alt="Gem Version" src="https://img.shields.io/gem/v/termline?style=for-the-badge&logo=ruby">
+    </a>
+    <a target="_blank" href="https://codecov.io/github/LesliTech/Termline">
+        <img alt="Codecov" src="https://img.shields.io/codecov/c/github/LesliTech/Termline?style=for-the-badge&logo=codecov">
+    </a>
+    <a target="_blank" href="https://sonarcloud.io/project/overview?id=LesliTech_Termline">
+        <img alt="Sonar Quality Gate" src="https://img.shields.io/sonar/quality_gate/LesliTech_Termline?server=https%3A%2F%2Fsonarcloud.io&style=for-the-badge&logo=sonarqubecloud&label=Quality">
+    </a>
+</div>
+
 <br />
 
+<div align="center">
+    <img
+        style="width:100%;max-width:800px;border-radius:6px;"
+        alt="Termline formatted terminal output"
+        src="./docs/images/screenshot.png" />
+</div>
 
-### Quick start
+<br />
+
+---
+
+<br />
+
+## Introduction
+
+Termline is a lightweight Ruby library for producing structured, readable terminal output.
+
+It provides semantic messages, colors, icons, metadata, lists, tables, and separators through a small public API used throughout the Lesli ecosystem.
+
+<br />
+
+## Features
+
+- Semantic info, success, warning, and danger messages
+- Colored output with icons and timestamps
+- Structured key-value metadata
+- Lists and tabular output
+- Reusable line and spacing helpers
+- No application framework required
+
+<br />
+
+## Installation
+
+Add Termline to the application:
 
 ```shell
-# Add LesliAdmin engine gem
 bundle add termline
 ```
 
-### Usage 
+<br />
+
+## Usage
+
+### Messages
+
 ```ruby
+require "termline"
+
 Termline.msg "Hello world"
 Termline.info "Server started"
 Termline.success "All tests passed"
 Termline.warning "Low disk space"
 Termline.danger "Something failed"
+```
 
-Termline.br
+Attach structured metadata using keyword arguments:
+
+```ruby
+Termline.success "Compiled application.tailwind.css", size: "1.4 KB"
+Termline.info "Connected", adapter: "postgres", duration: "12ms"
+```
+
+### Lists and tables
+
+```ruby
+Termline.list("Rails", "Lesli", "Tailwind")
 
 Termline.table([
   { name: "Luis", role: "Admin", status: "Active" },
@@ -31,25 +98,62 @@ Termline.table([
 ])
 ```
 
-**Result:** 
+### Spacing and separators
 
-<img  alt="LesliTesting logo" src="./docs/images/screenshot.png" />
+```ruby
+Termline.br
+Termline.br(2)
+Termline.line
+```
 
+<br />
 
-### Documentation
-* [website](https://www.lesli.dev/)
-* [documentation](https://www.lesli.dev/gems/termline/)
+## Development
 
+Clone the repository and install its dependencies:
 
-### Connect with Lesli
+```shell
+git clone https://github.com/LesliTech/Termline.git
+cd Termline
+bundle install
+```
 
-* [X: @LesliTech](https://x.com/LesliTech)
-* [Email: hello@lesli.tech](hello@lesli.tech)
-* [Website: https://www.lesli.tech](https://www.lesli.tech)
+To use local source from a Lesli development workspace, reference it from the host application's `Gemfile`:
 
+```ruby
+gem "termline", path: "gems/Termline"
+```
 
-### License
--------
+### Tests
+
+Run the default test task from the Termline directory:
+
+```shell
+bundle exec rake
+```
+
+<br />
+
+## Documentation
+
+- [Lesli website](https://www.lesli.dev/)
+- [Documentation](https://www.lesli.dev/gems/termline/)
+- [Release notes](https://github.com/LesliTech/Termline/releases)
+- [Issue tracker](https://github.com/LesliTech/Termline/issues)
+- [Source code](https://github.com/LesliTech/Termline)
+
+<br />
+
+## Community
+
+- [X: @LesliTech](https://x.com/LesliTech)
+- [hello@lesli.tech](mailto:hello@lesli.tech)
+- [https://www.lesli.tech](https://www.lesli.tech)
+
+<br />
+
+## License
+
 Copyright (c) 2026, Lesli Technologies, S. A.
 
 This program is free software: you can redistribute it and/or modify
@@ -63,19 +167,16 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program. If not, see http://www.gnu.org/licenses/.
+along with this program. If not, see [https://www.gnu.org/licenses/](https://www.gnu.org/licenses/).
+
+The complete license text is available in the [license file](./license.txt).
+
+---
 
 <br />
-<hr />
-<br />
 <br />
 
-<div align="center" class="has-text-centered">
-    <img width="200" alt="Lesli logo" src="https://cdn.lesli.tech/lesli/brand/app-logo.svg" />
-    <h3 align="center" class="mt-0">
-        The Open-Source SaaS Development Framework for Ruby on Rails.
-    </h3>
+<div align="center">
+    <img width="80" alt="Lesli icon" src="https://cdn.lesli.tech/lesli/brand/app-icon.svg" />
+    <h3 align="center">The Open-Source SaaS Development Framework for Ruby on Rails.</h3>
 </div>
-
-<br />
-<br />
