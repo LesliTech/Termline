@@ -39,29 +39,46 @@
 
 ## Introduction
 
-Termline is a lightweight Ruby library for producing structured, readable terminal output.
+Termline provides human-friendly terminal output for applications and development tools built with the [Lesli Framework](https://github.com/LesliTech/Lesli).
 
-It provides semantic messages, colors, icons, metadata, lists, tables, and separators through a small public API used throughout the Lesli ecosystem.
+It exposes a small Ruby API for semantic messages, colors, icons, structured metadata, lists, tables, and separators. Termline has no application-framework dependency, so it can also be used by standalone Ruby applications, scripts, Rake tasks, and command-line tools.
 
 <br />
 
-## Features
+## Why Termline?
 
+Termline provides:
+
+- Consistent terminal output across the Lesli ecosystem
 - Semantic info, success, warning, and danger messages
-- Colored output with icons and timestamps
+- Colored icons, labels, and timestamps
 - Structured key-value metadata
-- Lists and tabular output
-- Reusable line and spacing helpers
-- No application framework required
+- Styled lists and tabular output
+- Reusable spacing and separator helpers
+- A lightweight implementation with no runtime dependencies
 
 <br />
 
-## Installation
+## Quick Start
+
+### Requirements
+
+- Ruby 2.7.2 or newer
+
+Termline is framework-independent and does not require Rails.
+
+### Installation
 
 Add Termline to the application:
 
 ```shell
 bundle add termline
+```
+
+Require the gem when Bundler does not load it automatically:
+
+```ruby
+require "termline"
 ```
 
 <br />
@@ -80,17 +97,31 @@ Termline.warning "Low disk space"
 Termline.danger "Something failed"
 ```
 
-Attach structured metadata using keyword arguments:
+Every semantic helper accepts multiple messages and prints each one on its own line:
+
+```ruby
+Termline.info "Loading configuration", "Connecting to database"
+```
+
+Attach structured metadata with keyword arguments:
 
 ```ruby
 Termline.success "Compiled application.tailwind.css", size: "1.4 KB"
 Termline.info "Connected", adapter: "postgres", duration: "12ms"
 ```
 
+Override the default tag, icon, or timestamp when the output needs a different presentation:
+
+```ruby
+Termline.info "User authenticated", tag: "AUTH:", icon: :star
+Termline.success "Cache warmed", time: false
+```
+
 ### Lists and tables
 
 ```ruby
 Termline.list("Rails", "Lesli", "Tailwind")
+Termline.list("Database", "Cache", icon: :success, color: :green)
 
 Termline.table([
   { name: "Luis", role: "Admin", status: "Active" },
@@ -105,6 +136,29 @@ Termline.br
 Termline.br(2)
 Termline.line
 ```
+
+### Public API
+
+| Helper | Purpose |
+| --- | --- |
+| `Termline.m` | Print one or more unformatted values |
+| `Termline.msg` | Print neutral messages with optional metadata |
+| `Termline.info` | Print informational messages |
+| `Termline.success` | Print successful outcomes |
+| `Termline.warning` | Print warnings |
+| `Termline.danger` | Print errors or failed outcomes |
+| `Termline.alert` | Print a high-visibility blinking alert |
+| `Termline.list` | Print a styled list |
+| `Termline.table` | Print arrays, hashes, or Active Record relations as a table |
+| `Termline.br` | Print blank lines |
+| `Termline.line` | Print a visual separator |
+
+Message, list, table, and spacing helpers print directly to `STDOUT`. See the focused guides for all supported options and lower-level builders:
+
+- [Messages](./docs/messages.md)
+- [Lists](./docs/lists.md)
+- [Tables](./docs/tables.md)
+- [Separators and spacing](./docs/separator.md)
 
 <br />
 
@@ -132,13 +186,19 @@ Run the default test task from the Termline directory:
 bundle exec rake
 ```
 
+Run the executable examples to preview the available output styles:
+
+```shell
+bundle exec ruby test/demo_termline.rb
+```
+
 <br />
 
 ## Documentation
 
 - [Lesli website](https://www.lesli.dev/)
-- [Documentation](https://www.lesli.dev/gems/termline/)
-- [Release notes](https://github.com/LesliTech/Termline/releases)
+- [Termline documentation](https://www.lesli.dev/gems/termline/)
+- [Releases and changelog](https://github.com/LesliTech/Termline/releases)
 - [Issue tracker](https://github.com/LesliTech/Termline/issues)
 - [Source code](https://github.com/LesliTech/Termline)
 

@@ -1,4 +1,4 @@
-## Termline::Tables
+## Termline::Table
 
 Termline includes a simple table helper for printing structured data in the terminal.
 
@@ -21,7 +21,7 @@ data = [
 Termline.table(data)
 ```
 
-Example output:
+Example output (column width varies with the terminal):
 
 ```text
 | NAME                     | ROLE                     | STATUS
@@ -50,7 +50,8 @@ When the input is an array of hashes:
 
 - the first row keys are used as table headers
 - the header row is enabled by default
-- each row values are rendered in aligned columns
+- each row's values are rendered in the insertion order of its hash
+- rows should use the same keys in the same order
 
 
 
@@ -72,6 +73,7 @@ When the input is an array of arrays:
 
 - headers are automatically disabled
 - each row is rendered as plain table data
+- rows should contain the same number of values
 
 
 ## Header Option
@@ -125,6 +127,8 @@ Default:
 true
 ```
 
+For array-based rows, headers are always disabled.
+
 ## Behavior
 
 `Termline.table` automatically:
@@ -136,6 +140,8 @@ true
 - skips rendering if there is not enough space
 - skips rendering on Windows platforms
 - ignores empty collections
+
+Values wider than their calculated column are not truncated or wrapped, so keep table content concise.
 
 Internally, this method delegates to `Termline::Table.builder`, but the recommended public API is `Termline.table`.
 

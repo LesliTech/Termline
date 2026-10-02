@@ -66,7 +66,7 @@ Termline.line(count = 8)
 ### Parameters
 
 #### `count`
-The number of times the separator pattern should be repeated.
+For `br`, the number of newline characters to generate. For `line`, the number of times the separator pattern is repeated.
 
 Default values:
 
@@ -92,7 +92,7 @@ Internally, these methods delegate to the separator builder, but the recommended
 
 For most cases, the public shortcuts are the recommended API.
 
-If you need lower-level control or want to generate a custom separator string directly, you can call:
+If you need lower-level control or want to generate a custom spacing string, use `Termline::Space.builder`. The builder returns a string; it does not print it:
 
 ```ruby
 Termline::Space.builder("\n", 3)

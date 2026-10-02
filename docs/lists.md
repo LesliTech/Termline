@@ -1,4 +1,4 @@
-## Termline::Lists
+## Termline::List
 
 Termline includes a simple list helper for printing collections as styled terminal bullets.
 
@@ -91,11 +91,11 @@ Termline.list(*items, color: :default, icon: :debug)
 
 ### Parameters
 
-|  |  |
-|--- |--- | 
-| **items:** | A list of strings or printable values. | 
-| **color:** | The color key used to style the icon. The color must exist in `Termline::Style::COLORS`. | 
-| **icon:** | The icon key used before each item. The icon must exist in `Termline::Style::ICONS`. | 
+| Parameter | Description |
+| --- | --- |
+| `items` | One or more strings or printable values. |
+| `color` | Color key used to style the icon. It must exist in `Termline::Style::COLORS`. |
+| `icon` | Icon key shown before each item. It must exist in `Termline::Style::ICONS`. |
 
 
 ## Available Icons
@@ -109,6 +109,8 @@ Termline currently includes these icons:
 :error
 :info
 :star
+:add
+:remove
 ```
 
 

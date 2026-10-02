@@ -4,10 +4,10 @@ Termline includes a set of message helpers for printing structured terminal outp
 
 ```ruby
 Termline.msg(*messages, **data)
-Termline.info(*messages, tag: 'INFO:', icon: :info, **data)
-Termline.success(*messages, tag: 'SUCCESS:', icon: :success, **data)
-Termline.warning(*messages, tag: 'WARNING:', icon: :warning, **data)
-Termline.danger(*messages, tag: 'DANGER:', icon: :error, **data)
+Termline.info(*messages, tag: "INFO:", icon: :info, time: true, **data)
+Termline.success(*messages, tag: "SUCCESS:", icon: :success, time: true, **data)
+Termline.warning(*messages, tag: "WARNING:", icon: :warning, time: true, **data)
+Termline.danger(*messages, tag: "DANGER:", icon: :error, time: true, **data)
 Termline.alert(*messages)
 ```
 
@@ -60,7 +60,7 @@ Termline.danger "Service unavailable"
 
 ## Multiple Messages
 
-All public message methods accept multiple messages:
+Neutral and semantic message helpers accept multiple messages:
 
 ```ruby
 Termline.info "Booting app", "Loading config", "Starting services"
@@ -74,16 +74,18 @@ Each message is printed on its own line.
 You can add structured metadata using keyword arguments:
 
 ```ruby
-Termline.info "Connected", adapter: "postgres", time: "12ms"
+Termline.info "Connected", adapter: "postgres", duration: "12ms"
 ```
 
 Example output:
 
 ```text
-[12:45:02:123] ℹ INFO: Connected adapter=>postgres time=>12ms
+[12:45:02:123] ℹ INFO: Connected adapter=>postgres duration=>12ms
 ```
 
-Metadata values are automatically formatted for display.
+Metadata values are automatically formatted for display. Strings containing spaces are quoted.
+
+`tag`, `icon`, and `time` are reserved options on semantic helpers. Use a different key, such as `duration`, when attaching timing metadata.
 
 
 
@@ -95,6 +97,12 @@ Each semantic helper has default values for `tag` and `icon`, but you can overri
 Termline.info "User authenticated", tag: "AUTH:", icon: :star
 ```
 
+Disable the timestamp with `time: false`:
+
+```ruby
+Termline.success "Cache warmed", time: false
+```
+
 
 ## Alert Messages
 
@@ -104,7 +112,7 @@ Use `alert` for high-visibility output:
 Termline.alert "Critical error"
 ```
 
-This uses blinking terminal output and a red highlighted version of the message.
+Each alert is printed twice: first as blinking text and then as blinking red text. Blink support depends on the terminal.
 
 
 
@@ -112,21 +120,22 @@ This uses blinking terminal output and a red highlighted version of the message.
 
 ```ruby
 Termline.msg(*messages, **data)
-Termline.info(*messages, tag: 'INFO:', icon: :info, **data)
-Termline.success(*messages, tag: 'SUCCESS:', icon: :success, **data)
-Termline.warning(*messages, tag: 'WARNING:', icon: :warning, **data)
-Termline.danger(*messages, tag: 'DANGER:', icon: :error, **data)
+Termline.info(*messages, tag: "INFO:", icon: :info, time: true, **data)
+Termline.success(*messages, tag: "SUCCESS:", icon: :success, time: true, **data)
+Termline.warning(*messages, tag: "WARNING:", icon: :warning, time: true, **data)
+Termline.danger(*messages, tag: "DANGER:", icon: :error, time: true, **data)
 Termline.alert(*messages)
 ```
 
 ### Parameters
 
-|  |  |
-|--- |--- | 
-| **messages:** | One or more strings or printable values. | 
-| **tag:** | An optional label shown before the message. | 
-| **icon:** | The icon key used before the tag. The icon must exist in `Termline::Style::ICONS`. | 
-| **data:** | Optional keyword arguments rendered as key-value metadata. | 
+| Parameter | Description |
+| --- | --- |
+| `messages` | One or more strings or printable values. |
+| `tag` | Optional label shown before the message. |
+| `icon` | Icon key shown before the tag. It must exist in `Termline::Style::ICONS`. |
+| `time` | Whether to include the timestamp. Defaults to `true` on semantic helpers. |
+| `data` | Additional keyword arguments rendered as key-value metadata. |
 
 
 ## Behavior
@@ -135,7 +144,7 @@ Public message helpers:
 
 - accept one or more messages
 - print one line per message
-- prepend timestamps by default
+- prepend timestamps by default; semantic helpers accept `time: false`
 - optionally render icons and tags
 - support structured key-value metadata
 - print directly to STDOUT
@@ -156,7 +165,7 @@ Termline::Msg.builder(
   tag: "DB:",
   icon: :success,
   color: :green,
-  timestamp: Time.now.strftime('%H:%M:%S:%L'),
+  timestamp: Time.now.strftime("%H:%M:%S:%L"),
   data: { adapter: "postgres", time: "12ms" }
 )
 ```
@@ -176,7 +185,7 @@ puts Termline::Msg.builder(
 Use this only when you need direct access to the internal message builder. For normal usage, prefer:
 
 ```ruby
-Termline.success "Connected", tag: "DB:", adapter: "postgres", time: "12ms"
+Termline.success "Connected", tag: "DB:", adapter: "postgres", duration: "12ms"
 ```
 
 

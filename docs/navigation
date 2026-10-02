@@ -3,5 +3,5 @@
     "/gems/termline/messages",
     "/gems/termline/tables",
     "/gems/termline/lists",
-    "/gems/termline/separators"
+    "/gems/termline/separator"
 ]) %>
