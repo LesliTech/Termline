@@ -155,10 +155,11 @@ Termline.line
 
 Message, list, table, and spacing helpers print directly to `STDOUT`. See the focused guides for all supported options and lower-level builders:
 
-- [Messages](./docs/messages.md)
-- [Lists](./docs/lists.md)
-- [Tables](./docs/tables.md)
-- [Separators and spacing](./docs/separator.md)
+- [Installation](https://www.lesli.dev/gems/termline/about/installation)
+- [Messages](https://www.lesli.dev/gems/termline/messages)
+- [Lists](https://www.lesli.dev/gems/termline/lists)
+- [Tables](https://www.lesli.dev/gems/termline/tables)
+- [Separators and spacing](https://www.lesli.dev/gems/termline/separator)
 
 <br />
 
