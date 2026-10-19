@@ -40,22 +40,10 @@ class TestSpaceAndText < TermlineTestCase
         assert_raises(ArgumentError) { Termline::Text.title("Title", width: 0) }
     end
 
-    def test_key_value_accepts_a_hash_and_additional_pairs
-        rendered = Termline::Text.key_value({ name: "Termline" }, version: "1.1.2")
+    def test_title_public_helper_writes_and_returns_the_rendered_title
+        rendered = Termline.title("Summary", width: 16)
 
-        assert_equal "name   : Termline\nversion: 1.1.2", rendered
-    end
-
-    def test_additional_key_value_pairs_override_hash_values
-        rendered = Termline::Text.key_value({ status: "pending" }, status: "ready")
-
-        assert_equal "status: ready", rendered
-    end
-
-    def test_empty_key_value_data_does_not_write
-        rendered = Termline.key_value({})
-
-        assert_equal "", rendered
-        assert_empty @output.string
+        assert_equal "── Summary ─────", rendered
+        assert_equal "── Summary ─────\n", @output.string
     end
 end

@@ -1,6 +1,6 @@
 ## Text Components
 
-Termline includes lightweight section titles and aligned key-value blocks. Their public helpers write to the configured output and return the rendered content; their lower-level builders only return strings.
+`Termline::Text` provides lightweight section titles. The public helper writes to the configured output and returns the rendered content; the lower-level builder only returns a string.
 
 
 ## Titles
@@ -23,39 +23,12 @@ Termline.title "Summary", character: "=", width: 60
 ```
 
 
-## Key-Value Blocks
-
-```ruby
-Termline.key_value(
-  environment: "production",
-  version: "1.4.0",
-  workers: 4
-)
-```
-
-Example output:
-
-```text
-environment: production
-version    : 1.4.0
-workers    : 4
-```
-
-Labels are padded to the longest key, which keeps values easy to scan. Customize the label color or separator when necessary:
-
-```ruby
-Termline.key_value({ host: "localhost", port: 3000 }, color: :green)
-Termline.key_value({ status: "ready" }, separator: " = ")
-```
-
-
 ## Builder API
 
-The public helpers write to the configured output and return their rendered content. The lower-level builders only return strings:
+For composition without output, use the builder directly:
 
 ```ruby
-Termline::Text.title("Deployment", width: 40)
-Termline::Text.key_value(environment: "production", version: "1.4.0")
+rendered = Termline::Text.title("Deployment", width: 40)
 ```
 
-These components do not introduce a markup parser or component tree; they remain small formatting helpers.
+Titles remain small formatting helpers and do not introduce a markup parser or component tree.

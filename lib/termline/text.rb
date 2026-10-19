@@ -14,24 +14,6 @@ module Termline
                 Style.colorize(plain, color)
             end
 
-            def key_value(data=nil, color: :blue, separator: ": ", **additional_data)
-                data = additional_data if data.nil?
-                data = data.merge(additional_data) if !additional_data.empty? && data.respond_to?(:merge)
-
-                unless data.respond_to?(:each_pair)
-                    raise ArgumentError, "Key-value data must be a hash-like object"
-                end
-
-                pairs = data.each_pair.to_a
-                return "" if pairs.empty?
-
-                key_width = pairs.map { |key, _value| key.to_s.length }.max
-                pairs.map do |key, value|
-                    label = Style.colorize(key.to_s.ljust(key_width), color)
-                    "#{label}#{separator}#{format_value(value)}"
-                end.join("\n")
-            end
-
             private
 
             def fit_title(prefix, character, width)
@@ -61,17 +43,6 @@ module Termline
                 width
             rescue ArgumentError, TypeError
                 raise ArgumentError, "Text width must be a positive integer"
-            end
-
-            def format_value(value)
-                case value
-                when nil
-                    "nil"
-                when String
-                    value
-                else
-                    value.to_s
-                end
             end
         end
     end

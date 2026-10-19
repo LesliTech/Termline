@@ -55,7 +55,7 @@ Termline provides:
 - Structured key-value metadata
 - Ordered and unordered lists
 - Terminal-aware tables with alignment and truncation
-- Reusable titles, key-value blocks, spacing, and adaptive separators
+- Reusable titles, detail blocks, spacing, and adaptive separators
 - A lightweight implementation with no runtime dependencies
 
 <br />
@@ -144,11 +144,12 @@ Termline.table([
 
 Tables fit the available terminal width, truncate long values with `…`, and right-align numeric columns automatically.
 
-### Titles and key-value blocks
+### Titles and details
 
 ```ruby
 Termline.title "Deployment"
-Termline.key_value environment: "production", version: "1.4.0"
+Termline.details environment: "production", version: "1.4.0"
+Termline.details({ status: "ready", workers: 4 }, icons: { status: :success, workers: :info })
 ```
 
 ### Spacing and separators
@@ -178,7 +179,7 @@ Without arguments, `line` adapts to the current terminal width.
 | `Termline.ordered_list` | Print a numbered list |
 | `Termline.table` | Print width-aware arrays, hashes, or Active Record relations as a table |
 | `Termline.title` | Print a terminal-width section title |
-| `Termline.key_value` | Print an aligned key-value block |
+| `Termline.details` | Print an aligned block of labeled details |
 | `Termline.br` | Print blank lines |
 | `Termline.line` | Print a visual separator |
 | `Termline.color` | Print a terminal-width background color bar when ANSI is enabled |
@@ -190,7 +191,8 @@ Message, list, table, and spacing helpers write to the configured output, which 
 - [Messages](https://www.lesli.dev/gems/termline/messages)
 - [Lists](https://www.lesli.dev/gems/termline/lists)
 - [Tables](https://www.lesli.dev/gems/termline/tables)
-- [Text components](https://www.lesli.dev/gems/termline/text)
+- [Details](https://www.lesli.dev/gems/termline/details)
+- [Titles](https://www.lesli.dev/gems/termline/text)
 - [Separators and spacing](https://www.lesli.dev/gems/termline/separator)
 
 ### Output configuration

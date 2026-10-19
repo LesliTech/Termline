@@ -40,6 +40,7 @@ require_relative "termline/space"
 require_relative "termline/list"
 require_relative "termline/msg"
 require_relative "termline/text"
+require_relative "termline/details"
 
 
 # ·
@@ -168,8 +169,15 @@ module Termline
             write(Termline::Text.title(text, color:color, character:character, width:width || terminal.width))
         end
 
-        def key_value(data=nil, color: :blue, separator: ": ", **pairs)
-            write(Termline::Text.key_value(data, color:color, separator:separator, **pairs))
+        def details(data=nil, color: :blue, separator: ": ", icon: nil, icons: nil, **pairs)
+            write(Termline::Details.builder(
+                data,
+                color:color,
+                separator:separator,
+                icon:icon,
+                icons:icons,
+                **pairs
+            ))
         end
 
         def deprecation(*messages, time:nil, **data)

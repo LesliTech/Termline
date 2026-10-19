@@ -47,8 +47,60 @@ Termline.br 2
 Termline.ordered_list("Install", "Configure", "Run", color: :blue)
 
 Termline.br 2
-Termline.title("Environment")
-Termline.key_value(environment: "development", ruby: RUBY_VERSION, workers: 4)
+Termline.title("Details")
+
+Termline.m("Basic values")
+Termline.details(
+    environment: "development",
+    ruby: RUBY_VERSION,
+    workers: 4,
+    debug: false
+)
+
+Termline.br
+Termline.m("Custom color and separator")
+Termline.details(
+    { host: "localhost", port: 3000, ssl: true },
+    color: :green,
+    separator: " → "
+)
+
+Termline.br
+Termline.m("Shared icon")
+Termline.details(
+    { environment: "development", ruby: RUBY_VERSION, workers: 4 },
+    icon: :info
+)
+
+Termline.br
+Termline.m("Icon per key")
+Termline.details(
+    { environment: "development", ruby: RUBY_VERSION, workers: 4 },
+    icons: { environment: :info, ruby: :star, workers: :success }
+)
+
+Termline.br
+Termline.m("Shared icon with per-key overrides")
+Termline.details(
+    { status: "ready", workers: 4, retries: 0 },
+    icon: :info,
+    icons: { status: :success, retries: :warning }
+)
+
+Termline.br
+Termline.m("Partial icon map")
+Termline.details(
+    { service: "api", region: "us-east-1", healthy: true },
+    icons: { healthy: :success }
+)
+
+Termline.br
+Termline.m("Mixed values")
+Termline.details(
+    retries: nil,
+    cached: true,
+    duration: 12.5
+)
 
 Termline.br 2
 Termline.title("Tables")

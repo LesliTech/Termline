@@ -277,30 +277,4 @@ class TestTermline < TermlineTestCase
         assert_equal 20, title.length
     end
 
-    def test_key_value_aligns_labels
-        Termline.ansi = false
-
-        text = Termline::Text.key_value(environment: "production", version: "1.2")
-
-        assert_equal "environment: production\nversion    : 1.2", text
-    end
-
-    def test_title_and_key_value_write_through_the_public_api
-        buffer = StringIO.new
-        Termline.output = buffer
-        Termline.ansi = false
-
-        Termline.title("Summary", width: 16)
-        Termline.key_value(status: "ready", jobs: 4)
-
-        assert_equal "── Summary ─────\nstatus: ready\njobs  : 4\n", buffer.string
-    end
-
-    def test_key_value_rejects_non_hash_data
-        Termline.output = StringIO.new
-
-        error = assert_raises(ArgumentError) { Termline.key_value("status") }
-
-        assert_includes error.message, "hash-like"
-    end
 end
