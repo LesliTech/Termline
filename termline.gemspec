@@ -59,6 +59,6 @@ Gem::Specification.new do |spec|
     spec.metadata["documentation_uri"]  = "https://www.lesli.dev/gems/termline/"
 
     spec.files = Dir.chdir(File.expand_path(__dir__)) do
-        Dir["{lib}/**/*", "license.txt", "readme.md"]
+        Dir["{lib}/**/*", "license.txt", "readme.md", "todo.md"]
     end
 end

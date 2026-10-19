@@ -254,6 +254,7 @@ bundle exec ruby test/demo_termline.rb
 
 - [Lesli website](https://www.lesli.dev/)
 - [Termline documentation](https://www.lesli.dev/gems/termline/)
+- [Roadmap and P3 ToDo](./todo.md)
 - [Releases and changelog](https://github.com/LesliTech/Termline/releases)
 - [Issue tracker](https://github.com/LesliTech/Termline/issues)
 - [Source code](https://github.com/LesliTech/Termline)
