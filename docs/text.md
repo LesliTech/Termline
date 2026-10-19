@@ -1,6 +1,6 @@
 ## Text Components
 
-Termline includes lightweight section titles and aligned key-value blocks. Both render directly to strings and follow the configured ANSI mode.
+Termline includes lightweight section titles and aligned key-value blocks. Their public helpers write to the configured output and return the rendered content; their lower-level builders only return strings.
 
 
 ## Titles

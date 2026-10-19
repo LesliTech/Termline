@@ -1,8 +1,8 @@
-<%= navigation_for_folder("gems", "termline", "about", order:["installation"]) %>
+<%= navigation_for_folder("gems", "termline", "about", order:["installation", "testing"]) %>
 <%= navigation_for_files([
+    "/gems/termline/separator",
     "/gems/termline/messages",
     "/gems/termline/tables",
     "/gems/termline/lists",
-    "/gems/termline/text",
-    "/gems/termline/separator"
+    "/gems/termline/text"
 ]) %>

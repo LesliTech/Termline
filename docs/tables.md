@@ -42,6 +42,7 @@ Termline.table([
 ```
 
 Rows may omit keys. Termline uses the union of the keys and leaves missing values blank.
+Embedded newlines and repeated whitespace inside cells are collapsed so every table row remains on one terminal line.
 
 ### Single hash
 
@@ -89,6 +90,7 @@ Termline.table(
 ```
 
 Available values are `:auto`, `:left`, `:center`, and `:right`. An array can also provide one value per column.
+Automatic alignment treats actual Ruby `Numeric` values as numbers; numeric-looking strings remain left-aligned.
 
 
 ## Width and Truncation

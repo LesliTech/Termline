@@ -3,6 +3,7 @@
 Termline includes a set of message helpers for printing structured terminal output with colors, icons, tags, timestamps, and key-value metadata.
 
 ```ruby
+Termline.m(*messages)
 Termline.msg(*messages, time: nil, bgcolor: :default, **data)
 Termline.info(*messages, tag: "INFO:", icon: :info, time: nil, bgcolor: :default, **data)
 Termline.success(*messages, tag: "SUCCESS:", icon: :success, time: nil, bgcolor: :default, **data)
@@ -11,6 +12,18 @@ Termline.danger(*messages, tag: "DANGER:", icon: :error, time: nil, bgcolor: :de
 Termline.alert(*messages)
 Termline.deprecation(*messages, time: nil, **data)
 ```
+
+
+## Raw Output
+
+Use `m` when text should be written without timestamps, tags, icons, colors, or metadata:
+
+```ruby
+Termline.m "Starting application"
+Termline.m "First line", "Second line"
+```
+
+Each value is converted to a string and written on its own line.
 
 
 ## Basic Usage
@@ -86,7 +99,7 @@ Example output:
 
 Metadata values are automatically formatted for display. Strings containing spaces are quoted.
 
-`tag`, `icon`, and `time` are reserved options on semantic helpers. Use a different key, such as `duration`, when attaching timing metadata.
+`tag`, `icon`, `time`, and `bgcolor` are reserved options on semantic helpers. Use a different key, such as `duration`, when attaching timing metadata.
 
 
 
@@ -126,6 +139,8 @@ Termline.alert "Critical error"
 
 Each alert is printed once as white text on a red background. It does not use terminal blinking.
 
+Alerts intentionally do not include timestamps, tags, icons, or metadata.
+
 
 ## Deprecation Messages
 
@@ -142,6 +157,7 @@ Deprecations use the warning style with a `DEPRECATED:` tag.
 ## Method Signatures
 
 ```ruby
+Termline.m(*messages)
 Termline.msg(*messages, time: nil, bgcolor: :default, **data)
 Termline.info(*messages, tag: "INFO:", icon: :info, time: nil, bgcolor: :default, **data)
 Termline.success(*messages, tag: "SUCCESS:", icon: :success, time: nil, bgcolor: :default, **data)
@@ -169,10 +185,13 @@ Public message helpers:
 
 - accept one or more messages
 - print one line per message
-- prepend timestamps by default; every message helper accepts a per-call `time` override
-- optionally render icons and tags
-- support structured key-value metadata
+- prepend timestamps by default for neutral, semantic, and deprecation messages
+- accept a per-call `time` override except for `alert`
+- optionally render icons and tags on semantic messages
+- support structured key-value metadata on neutral, semantic, and deprecation messages
 - write to the configured `Termline.output`, which defaults to `$stdout`
+
+Raw `m` output and alerts intentionally omit structured message features.
 
 Internally, these methods delegate to `Termline::Msg.builder`, but the recommended public API is to use the `Termline` shortcuts.
 
@@ -191,6 +210,7 @@ Termline::Msg.builder(
   icon: :success,
   color: :green,
   timestamp: Time.now.strftime("%H:%M:%S:%L"),
+  time: true,
   data: { adapter: "postgres", time: "12ms" }
 )
 ```

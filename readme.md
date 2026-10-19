@@ -181,6 +181,8 @@ Without arguments, `line` adapts to the current terminal width.
 | `Termline.key_value` | Print an aligned key-value block |
 | `Termline.br` | Print blank lines |
 | `Termline.line` | Print a visual separator |
+| `Termline.color` | Print a terminal-width background color bar when ANSI is enabled |
+| `Termline.configure` | Configure output, ANSI mode, width, and timestamp defaults |
 
 Message, list, table, and spacing helpers write to the configured output, which defaults to `$stdout`. See the focused guides for all supported options and lower-level builders:
 
@@ -248,7 +250,7 @@ The suite uses LesliTesting for the shared Lesli reporter and coverage configura
 COVERAGE=true bundle exec rake
 ```
 
-Use `QUIET=true` when only the final summary and coverage report are needed:
+Use `QUIET=true` to suppress the line printed for every individual test:
 
 ```shell
 QUIET=true COVERAGE=true bundle exec rake
@@ -266,6 +268,7 @@ bundle exec ruby test/demo_termline.rb
 
 - [Lesli website](https://www.lesli.dev/)
 - [Termline documentation](https://www.lesli.dev/gems/termline/)
+- [Testing guide](https://www.lesli.dev/gems/termline/about/testing)
 - [Roadmap and P3 ToDo](./todo.md)
 - [Releases and changelog](https://github.com/LesliTech/Termline/releases)
 - [Issue tracker](https://github.com/LesliTech/Termline/issues)

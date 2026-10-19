@@ -5,6 +5,7 @@ Termline includes small helpers for blank lines and visual separators.
 ```ruby
 Termline.br(count = 1)
 Termline.line(character: "─", width: nil)
+Termline.color(:red)
 ```
 
 
@@ -40,6 +41,17 @@ Termline.line(character: "·-", width: 40)
 ```
 
 Multi-character patterns are repeated and cropped to the requested width.
+
+
+## Background Color Bars
+
+Use `color` to print a terminal-width background bar:
+
+```ruby
+Termline.color(:red)
+```
+
+The helper accepts colors from `Termline::Style::BG_COLORS`. It produces no output when ANSI styling is disabled, including non-interactive output in the default `:auto` mode.
 
 
 ## Compatibility
