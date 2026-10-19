@@ -1,30 +1,8 @@
 # frozen_string_literal: true
 
 require "test_helper"
-require "stringio"
 
-class TestTermline < Minitest::Test
-    class TTYBuffer < StringIO
-        def tty?
-            true
-        end
-    end
-
-    def setup
-        Termline.output = nil
-        Termline.ansi = true
-        Termline.width = 80
-        Termline.timestamps = true
-        Termline.timestamp_format = "%H:%M:%S:%L"
-    end
-
-    def teardown
-        Termline.output = nil
-        Termline.ansi = :auto
-        Termline.width = nil
-        Termline.timestamps = true
-        Termline.timestamp_format = "%H:%M:%S:%L"
-    end
+class TestTermline < TermlineTestCase
 
     def test_that_it_has_a_version_number
         refute_nil ::Termline::VERSION

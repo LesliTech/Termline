@@ -9,7 +9,7 @@
 
 <div align="center">
     <a target="_blank" href="https://github.com/LesliTech/Termline/actions/workflows/master.yml">
-        <img alt="Termline test status" src="https://img.shields.io/github/actions/workflow/status/LesliTech/Termline/master.yml?branch=main&style=for-the-badge&logo=github&label=tests">
+        <img alt="Termline test status" src="https://img.shields.io/github/actions/workflow/status/LesliTech/Termline/master.yml?branch=master&style=for-the-badge&logo=github&label=tests">
     </a>
     <a target="_blank" href="https://rubygems.org/gems/termline">
         <img alt="Gem Version" src="https://img.shields.io/gem/v/termline?style=for-the-badge&logo=ruby">

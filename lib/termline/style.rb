@@ -90,14 +90,11 @@ module Termline
 
             # Format text
             def pretty(message, colour = :default, bg_colour = :default)
-                width = 1
-        
-                unless bg_colour == :default
-                    width = Termline.terminal.width - message.length - 4
-                    width = 1 if width.negative?
-                end
-        
-                return colorize("#{ message } #{"\ " * width}", colour, bg_colour)
+                text = message.to_s
+                return colorize(text, colour, bg_colour) if bg_colour == :default
+
+                padding = [Termline.terminal.width - text.length, 0].max
+                colorize("#{text}#{" " * padding}", colour, bg_colour)
             end
         end
     end 
