@@ -36,18 +36,31 @@ module Termline
             def builder(character, count=8)
                 character * count
             end
-            def br count=1
-                puts("\n" * count);
-            end 
-        
-            def line count=8
-                puts('-·-     ' * count)
+
+            def line(character, width)
+                character = character.to_s
+                raise ArgumentError, "Separator character cannot be empty" if character.empty?
+
+                width = positive_width(width)
+
+                (character * ((width.to_f / character.length).ceil))[0, width]
             end
 
             def color(color)
                 return "" unless Termline.terminal.ansi?
 
                 Style.pretty("", :black, color)
+            end
+
+            private
+
+            def positive_width(value)
+                width = Integer(value)
+                raise ArgumentError unless width.positive?
+
+                width
+            rescue ArgumentError, TypeError
+                raise ArgumentError, "Separator width must be a positive integer"
             end
         end
     end

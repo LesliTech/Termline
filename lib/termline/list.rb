@@ -33,8 +33,26 @@ Building a better future, one line of code at a time.
 module Termline 
     module List 
         class << self
-            def builder(items, icon:, color:)
-                items.map { |item| "  #{Style.colorize(Style.icon(icon), color)} #{ item }" }.join("\n")
+            def builder(items, icon: :debug, color: :default, ordered: false, start: 1)
+                first_number = integer_start(start)
+
+                items.each_with_index.map do |item, index|
+                    marker = if ordered
+                        Style.colorize("#{first_number + index}.", color)
+                    else
+                        Style.colorize(Style.icon(icon), color)
+                    end
+
+                    "  #{marker} #{item}"
+                end.join("\n")
+            end
+
+            private
+
+            def integer_start(value)
+                Integer(value)
+            rescue ArgumentError, TypeError
+                raise ArgumentError, "List start must be an integer"
             end
         end
     end

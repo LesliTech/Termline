@@ -40,12 +40,17 @@ module Termline
                 icon: nil,
                 color: :default, 
                 bgcolor: :default, 
-                timestamp: Time.now.strftime('%H:%M:%S:%L'), 
-                time:true,
+                timestamp: nil,
+                time:nil,
                 data:nil)
 
+                unless time.nil? || time == true || time == false
+                    raise ArgumentError, "Message time must be true, false, or nil"
+                end
+
+                show_time = time.nil? ? Termline.timestamps? : time
                 parts = []
-                parts << "[#{timestamp}]" if time
+                parts << "[#{timestamp || current_timestamp}]" if show_time
                 parts << Style.colorize(Style.icon(icon), color) if icon
                 parts << Style.colorize(tag, color) if tag
                 parts << if bgcolor == :default
@@ -75,7 +80,11 @@ module Termline
 
             def data_text(data, color)
                 return nil if data.nil? || data.empty?
-                data.map { |key, value| "#{key}#{Style.colorize('=>', color)}#{format_value(value)}" }.join(" ")            
+                data.map { |key, value| "#{Style.colorize(key, color)}=#{format_value(value)}" }.join(" ")
+            end
+
+            def current_timestamp
+                Time.now.strftime(Termline.timestamp_format)
             end
         end
     end

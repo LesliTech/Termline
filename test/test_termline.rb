@@ -14,12 +14,16 @@ class TestTermline < Minitest::Test
         Termline.output = nil
         Termline.ansi = true
         Termline.width = 80
+        Termline.timestamps = true
+        Termline.timestamp_format = "%H:%M:%S:%L"
     end
 
     def teardown
         Termline.output = nil
         Termline.ansi = :auto
         Termline.width = nil
+        Termline.timestamps = true
+        Termline.timestamp_format = "%H:%M:%S:%L"
     end
 
     def test_that_it_has_a_version_number
@@ -177,5 +181,148 @@ class TestTermline < Minitest::Test
         assert_raises(ArgumentError) { Termline.output = Object.new }
         assert_raises(ArgumentError) { Termline.ansi = :sometimes }
         assert_raises(ArgumentError) { Termline.width = 0 }
+    end
+
+    def test_message_timestamps_can_be_configured_globally
+        buffer = StringIO.new
+        Termline.output = buffer
+        Termline.ansi = false
+
+        configured = Termline.configure do |config|
+            config.timestamps = false
+            config.timestamp_format = "%H:%M:%S"
+        end
+
+        Termline.info("Quiet timestamp")
+
+        assert_same Termline, configured
+        assert_equal "ℹ INFO: Quiet timestamp\n", buffer.string
+        assert_equal "%H:%M:%S", Termline.timestamp_format
+    end
+
+    def test_explicit_message_time_overrides_global_configuration
+        Termline.timestamps = false
+
+        message = Termline::Msg.builder("Visible", timestamp: "10:20", time: true)
+
+        assert_equal "[10:20] Visible", message
+    end
+
+    def test_invalid_message_configuration_is_rejected
+        assert_raises(ArgumentError) { Termline.timestamps = :sometimes }
+        assert_raises(ArgumentError) { Termline.timestamp_format = "" }
+        assert_raises(ArgumentError) { Termline::Msg.builder("Hello", time: :sometimes) }
+    end
+
+    def test_metadata_uses_readable_key_value_notation
+        Termline.ansi = false
+
+        message = Termline::Msg.builder(
+            "Connected",
+            time: false,
+            data: { adapter: "postgres", duration: "12 ms" }
+        )
+
+        assert_equal 'Connected adapter=postgres duration="12 ms"', message
+    end
+
+    def test_ordered_list_supports_a_custom_start
+        buffer = StringIO.new
+        Termline.output = buffer
+        Termline.ansi = false
+
+        rendered = Termline.ordered_list("Install", "Run", start: 3, color: :green)
+
+        assert_equal "  3. Install\n  4. Run", rendered
+        assert_equal "  3. Install\n  4. Run\n", buffer.string
+    end
+
+    def test_table_truncates_content_to_terminal_width
+        Termline.ansi = false
+        Termline.width = 20
+
+        table = Termline::Table.builder([
+            { name: "Alexander Hamilton", count: 12 },
+            { name: "Ada", count: 3 }
+        ])
+
+        assert_includes table, "Alexand…"
+        assert table.lines.all? { |line| line.chomp.length <= 20 }
+        assert_match(/\|\s+12 \|/, table)
+    end
+
+    def test_table_alignment_can_be_selected_by_column
+        Termline.ansi = false
+        Termline.width = 40
+
+        table = Termline::Table.builder(
+            [{ name: "Ada", score: 9 }],
+            align: { name: :center, score: :left }
+        )
+
+        data_row = table.lines.last.chomp
+        assert_match(/\| Ada\s* \| 9\s* \|/, data_row)
+    end
+
+    def test_adaptive_separator_uses_terminal_width
+        buffer = StringIO.new
+        Termline.output = buffer
+        Termline.width = 12
+
+        rendered = Termline.line
+
+        assert_equal "─" * 12, rendered
+        assert_equal "#{"─" * 12}\n", buffer.string
+    end
+
+    def test_legacy_separator_count_remains_supported
+        Termline.ansi = false
+        Termline.output = StringIO.new
+
+        rendered = Termline.line(2)
+
+        assert_equal "-·-     -·-     ", rendered
+    end
+
+    def test_adaptive_separator_rejects_empty_characters
+        error = assert_raises(ArgumentError) { Termline::Space.line("", 20) }
+
+        assert_includes error.message, "cannot be empty"
+    end
+
+    def test_title_fills_the_available_width
+        Termline.ansi = false
+
+        title = Termline::Text.title("Deploy", width: 20)
+
+        assert_equal "── Deploy ──────────", title
+        assert_equal 20, title.length
+    end
+
+    def test_key_value_aligns_labels
+        Termline.ansi = false
+
+        text = Termline::Text.key_value(environment: "production", version: "1.2")
+
+        assert_equal "environment: production\nversion    : 1.2", text
+    end
+
+    def test_title_and_key_value_write_through_the_public_api
+        buffer = StringIO.new
+        Termline.output = buffer
+        Termline.ansi = false
+
+        Termline.title("Summary", width: 16)
+        Termline.key_value(status: "ready", jobs: 4)
+
+        assert_equal "── Summary ─────\nstatus: ready\njobs  : 4\n", buffer.string
+    end
+
+    def test_key_value_rejects_non_hash_data
+        Termline.output = StringIO.new
+
+        error = assert_raises(ArgumentError) { Termline.key_value("status") }
+
+        assert_includes error.message, "hash-like"
     end
 end

@@ -53,8 +53,9 @@ Termline provides:
 - Semantic info, success, warning, and danger messages
 - Colored icons, labels, and timestamps
 - Structured key-value metadata
-- Styled lists and tabular output
-- Reusable spacing and separator helpers
+- Ordered and unordered lists
+- Terminal-aware tables with alignment and truncation
+- Reusable titles, key-value blocks, spacing, and adaptive separators
 - A lightweight implementation with no runtime dependencies
 
 <br />
@@ -110,6 +111,8 @@ Termline.success "Compiled application.tailwind.css", size: "1.4 KB"
 Termline.info "Connected", adapter: "postgres", duration: "12ms"
 ```
 
+Metadata is rendered in a compact, readable form such as `adapter=postgres duration=12ms`.
+
 Override the default tag, icon, or timestamp when the output needs a different presentation:
 
 ```ruby
@@ -117,16 +120,35 @@ Termline.info "User authenticated", tag: "AUTH:", icon: :star
 Termline.success "Cache warmed", time: false
 ```
 
+Timestamp defaults can also be configured once for the application:
+
+```ruby
+Termline.configure do |config|
+  config.timestamps = false
+  config.timestamp_format = "%H:%M:%S"
+end
+```
+
 ### Lists and tables
 
 ```ruby
 Termline.list("Rails", "Lesli", "Tailwind")
 Termline.list("Database", "Cache", icon: :success, color: :green)
+Termline.ordered_list("Install", "Configure", "Run", start: 1)
 
 Termline.table([
   { name: "Luis", role: "Admin", status: "Active" },
   { name: "Ana", role: "Developer", status: "Pending" }
-])
+], align: { name: :left, status: :center })
+```
+
+Tables fit the available terminal width, truncate long values with `…`, and right-align numeric columns automatically.
+
+### Titles and key-value blocks
+
+```ruby
+Termline.title "Deployment"
+Termline.key_value environment: "production", version: "1.4.0"
 ```
 
 ### Spacing and separators
@@ -135,7 +157,10 @@ Termline.table([
 Termline.br
 Termline.br(2)
 Termline.line
+Termline.line(character: "=")
 ```
+
+Without arguments, `line` adapts to the current terminal width.
 
 ### Public API
 
@@ -149,8 +174,11 @@ Termline.line
 | `Termline.danger` | Print errors or failed outcomes |
 | `Termline.alert` | Print a high-visibility alert |
 | `Termline.deprecation` | Print a deprecation warning |
-| `Termline.list` | Print a styled list |
-| `Termline.table` | Print arrays, hashes, or Active Record relations as a table |
+| `Termline.list` | Print an unordered styled list |
+| `Termline.ordered_list` | Print a numbered list |
+| `Termline.table` | Print width-aware arrays, hashes, or Active Record relations as a table |
+| `Termline.title` | Print a terminal-width section title |
+| `Termline.key_value` | Print an aligned key-value block |
 | `Termline.br` | Print blank lines |
 | `Termline.line` | Print a visual separator |
 
@@ -160,6 +188,7 @@ Message, list, table, and spacing helpers write to the configured output, which 
 - [Messages](https://www.lesli.dev/gems/termline/messages)
 - [Lists](https://www.lesli.dev/gems/termline/lists)
 - [Tables](https://www.lesli.dev/gems/termline/tables)
+- [Text components](https://www.lesli.dev/gems/termline/text)
 - [Separators and spacing](https://www.lesli.dev/gems/termline/separator)
 
 ### Output configuration
@@ -184,6 +213,8 @@ The terminal width is detected when content is rendered and falls back to 80 col
 ```ruby
 Termline.width = 100
 ```
+
+Message timestamps are enabled by default. Use `Termline.timestamps = false` to disable them globally, and `time: true` or `time: false` to override the setting for one message.
 
 <br />
 

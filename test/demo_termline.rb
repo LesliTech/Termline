@@ -4,6 +4,7 @@ require_relative '../lib/termline'
 Termline.br
 Termline.br
 
+Termline.title("Messages")
 Termline.m("Simple message")
 
 Termline.br
@@ -33,6 +34,7 @@ Termline.danger("Message with data:", name: "Luis", last_name: "Donis", title: "
 
 Termline.br
 Termline.br
+Termline.title("Lists")
 Termline.list("one", "two", "three")
 
 Termline.br
@@ -42,13 +44,22 @@ Termline.br
 Termline.list("four", "five", "six", color: :green, icon: :star)
 
 Termline.br 2
+Termline.ordered_list("Install", "Configure", "Run", color: :blue)
+
+Termline.br 2
+Termline.title("Environment")
+Termline.key_value(environment: "development", ruby: RUBY_VERSION, workers: 4)
+
+Termline.br 2
+Termline.title("Tables")
 
 Termline.table(
     [
         { first_name: "Luis", last_name: "Donis", title: "software developer" },
         { first_name: "Luis", last_name: "Donis", title: "software developer" },
         { first_name: "Luis", last_name: "Donis", title: "software developer" },
-    ]
+    ],
+    align: { first_name: :left, last_name: :left, title: :center }
 )
 
 Termline.br 2
@@ -68,3 +79,6 @@ Termline.table([
     ["Ana", "Developer", "Pending"],
     ["Marco", "Support", "Disabled"]
 ])
+
+Termline.br 2
+Termline.line

@@ -3,13 +3,13 @@
 Termline includes a set of message helpers for printing structured terminal output with colors, icons, tags, timestamps, and key-value metadata.
 
 ```ruby
-Termline.msg(*messages, bgcolor: :default, **data)
-Termline.info(*messages, tag: "INFO:", icon: :info, time: true, bgcolor: :default, **data)
-Termline.success(*messages, tag: "SUCCESS:", icon: :success, time: true, bgcolor: :default, **data)
-Termline.warning(*messages, tag: "WARNING:", icon: :warning, time: true, bgcolor: :default, **data)
-Termline.danger(*messages, tag: "DANGER:", icon: :error, time: true, bgcolor: :default, **data)
+Termline.msg(*messages, time: nil, bgcolor: :default, **data)
+Termline.info(*messages, tag: "INFO:", icon: :info, time: nil, bgcolor: :default, **data)
+Termline.success(*messages, tag: "SUCCESS:", icon: :success, time: nil, bgcolor: :default, **data)
+Termline.warning(*messages, tag: "WARNING:", icon: :warning, time: nil, bgcolor: :default, **data)
+Termline.danger(*messages, tag: "DANGER:", icon: :error, time: nil, bgcolor: :default, **data)
 Termline.alert(*messages)
-Termline.deprecation(*messages, time: true, **data)
+Termline.deprecation(*messages, time: nil, **data)
 ```
 
 
@@ -81,7 +81,7 @@ Termline.info "Connected", adapter: "postgres", duration: "12ms"
 Example output:
 
 ```text
-[12:45:02:123] ℹ INFO: Connected adapter=>postgres duration=>12ms
+[12:45:02:123] ℹ INFO: Connected adapter=postgres duration=12ms
 ```
 
 Metadata values are automatically formatted for display. Strings containing spaces are quoted.
@@ -103,6 +103,17 @@ Disable the timestamp with `time: false`:
 ```ruby
 Termline.success "Cache warmed", time: false
 ```
+
+`time: nil` uses the global setting. Configure that default once for the application:
+
+```ruby
+Termline.configure do |config|
+  config.timestamps = false
+  config.timestamp_format = "%H:%M:%S"
+end
+```
+
+An explicit `time: true` or `time: false` overrides the global setting for that call.
 
 
 ## Alert Messages
@@ -131,13 +142,13 @@ Deprecations use the warning style with a `DEPRECATED:` tag.
 ## Method Signatures
 
 ```ruby
-Termline.msg(*messages, bgcolor: :default, **data)
-Termline.info(*messages, tag: "INFO:", icon: :info, time: true, bgcolor: :default, **data)
-Termline.success(*messages, tag: "SUCCESS:", icon: :success, time: true, bgcolor: :default, **data)
-Termline.warning(*messages, tag: "WARNING:", icon: :warning, time: true, bgcolor: :default, **data)
-Termline.danger(*messages, tag: "DANGER:", icon: :error, time: true, bgcolor: :default, **data)
+Termline.msg(*messages, time: nil, bgcolor: :default, **data)
+Termline.info(*messages, tag: "INFO:", icon: :info, time: nil, bgcolor: :default, **data)
+Termline.success(*messages, tag: "SUCCESS:", icon: :success, time: nil, bgcolor: :default, **data)
+Termline.warning(*messages, tag: "WARNING:", icon: :warning, time: nil, bgcolor: :default, **data)
+Termline.danger(*messages, tag: "DANGER:", icon: :error, time: nil, bgcolor: :default, **data)
 Termline.alert(*messages)
-Termline.deprecation(*messages, time: true, **data)
+Termline.deprecation(*messages, time: nil, **data)
 ```
 
 ### Parameters
@@ -147,7 +158,7 @@ Termline.deprecation(*messages, time: true, **data)
 | `messages` | One or more strings or printable values. |
 | `tag` | Optional label shown before the message. |
 | `icon` | Icon key shown before the tag. It must exist in `Termline::Style::ICONS`. |
-| `time` | Whether to include the timestamp. Defaults to `true` on semantic helpers. |
+| `time` | Whether to include the timestamp. `nil` uses the global configuration. |
 | `bgcolor` | Optional background color from `Termline::Style::BG_COLORS`. |
 | `data` | Additional keyword arguments rendered as key-value metadata. |
 
@@ -158,7 +169,7 @@ Public message helpers:
 
 - accept one or more messages
 - print one line per message
-- prepend timestamps by default; semantic helpers accept `time: false`
+- prepend timestamps by default; every message helper accepts a per-call `time` override
 - optionally render icons and tags
 - support structured key-value metadata
 - write to the configured `Termline.output`, which defaults to `$stdout`

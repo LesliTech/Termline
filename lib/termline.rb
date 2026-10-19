@@ -39,6 +39,7 @@ require_relative "termline/table"
 require_relative "termline/space"
 require_relative "termline/list"
 require_relative "termline/msg"
+require_relative "termline/text"
 
 
 # ·
@@ -72,27 +73,58 @@ module Termline
             terminal.width = value
         end
 
+        def timestamps
+            @timestamps.nil? ? true : @timestamps
+        end
+
+        alias timestamps? timestamps
+
+        def timestamps=(value)
+            unless value == true || value == false
+                raise ArgumentError, "Timestamps must be true or false"
+            end
+
+            @timestamps = value
+        end
+
+        def timestamp_format
+            @timestamp_format || "%H:%M:%S:%L"
+        end
+
+        def timestamp_format=(format)
+            unless format.is_a?(String) && !format.empty?
+                raise ArgumentError, "Timestamp format must be a non-empty string"
+            end
+
+            @timestamp_format = format
+        end
+
+        def configure
+            yield self
+            self
+        end
+
         def m(*messages)
             write(messages.map(&:to_s).join("\n"))
         end
 
-        def msg(*messages, bgcolor: :default, **data)
-            write(messages.map { |message| Termline::Msg.builder(message, bgcolor:bgcolor, data:data) }.join("\n"))
+        def msg(*messages, time:nil, bgcolor: :default, **data)
+            write(messages.map { |message| Termline::Msg.builder(message, bgcolor:bgcolor, data:data, time:time) }.join("\n"))
         end
 
-        def info(*messages, tag:'INFO:', icon: :info, time:true, bgcolor: :default, **data)
+        def info(*messages, tag:'INFO:', icon: :info, time:nil, bgcolor: :default, **data)
             write(messages.map { |message| Termline::Msg.builder(message, tag:tag, icon:icon, data:data, color: :blue, bgcolor:bgcolor, time:time) }.join("\n"))
         end
 
-        def success(*messages, tag:'SUCCESS:', icon: :success, time:true, bgcolor: :default, **data)
+        def success(*messages, tag:'SUCCESS:', icon: :success, time:nil, bgcolor: :default, **data)
             write(messages.map { |message| Termline::Msg.builder(message, tag:tag, icon:icon, data:data, color: :green, bgcolor:bgcolor, time:time) }.join("\n"))
         end
 
-        def warning(*messages, tag:'WARNING:', icon: :warning, time:true, bgcolor: :default, **data)
+        def warning(*messages, tag:'WARNING:', icon: :warning, time:nil, bgcolor: :default, **data)
             write(messages.map { |message| Termline::Msg.builder(message, tag:tag, icon:icon, data:data, color: :yellow, bgcolor:bgcolor, time:time) }.join("\n"))
         end
 
-        def danger(*messages, tag:'DANGER:', icon: :error, time:true, bgcolor: :default, **data)
+        def danger(*messages, tag:'DANGER:', icon: :error, time:nil, bgcolor: :default, **data)
             write(messages.map { |message| Termline::Msg.builder(message, tag:tag, icon:icon, data:data, color: :red, bgcolor:bgcolor, time:time) }.join("\n"))
         end
 
@@ -105,17 +137,26 @@ module Termline
             write(Termline::List.builder(items, color:color, icon:icon))
         end
 
+        def ordered_list(*items, color: :default, start: 1)
+            write(Termline::List.builder(items, color:color, ordered:true, start:start))
+        end
 
-        def table(data, header:true)
-            write(Termline::Table.builder(data, header:header))
+        def table(data, header:true, align: :auto)
+            write(Termline::Table.builder(data, header:header, align:align))
         end
 
         def br(count=1)
             write(Termline::Space.builder("\n", count))
         end 
 
-        def line(count=8)
-            write(Termline::Space.builder('-·-     ', count))
+        def line(count=nil, character: "─", width: nil)
+            content = if count
+                Termline::Space.builder('-·-     ', count)
+            else
+                Termline::Space.line(character, width || terminal.width)
+            end
+
+            write(content)
         end
 
         def color(color)
@@ -123,7 +164,15 @@ module Termline
         end
 
 
-        def deprecation(*messages, time:true, **data)
+        def title(text, color: :blue, character: "─", width: nil)
+            write(Termline::Text.title(text, color:color, character:character, width:width || terminal.width))
+        end
+
+        def key_value(data=nil, color: :blue, separator: ": ", **pairs)
+            write(Termline::Text.key_value(data, color:color, separator:separator, **pairs))
+        end
+
+        def deprecation(*messages, time:nil, **data)
             warning(*messages, tag: 'DEPRECATED:', time:time, **data)
         end
 

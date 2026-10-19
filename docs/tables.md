@@ -1,11 +1,9 @@
 ## Termline::Table
 
-Termline includes a simple table helper for printing structured data in the terminal.
-
-In most cases, you should use the public shortcut:
+Termline renders compact tables that adapt to the available terminal width.
 
 ```ruby
-Termline.table(data, header: true)
+Termline.table(data, header: true, align: :auto)
 ```
 
 
@@ -13,174 +11,124 @@ Termline.table(data, header: true)
 
 ```ruby
 data = [
-  { name: "Luis", role: "Admin", status: "Active" },
-  { name: "Ana", role: "Developer", status: "Pending" },
-  { name: "Marco", role: "Support", status: "Disabled" }
+  { name: "Luis", role: "Admin", requests: 125 },
+  { name: "Ana", role: "Developer", requests: 42 }
 ]
 
 Termline.table(data)
 ```
 
-Example output (column width varies with the terminal):
+Example output:
 
 ```text
-| NAME                     | ROLE                     | STATUS
-| - - - - - - - - - - - - -| - - - - - - - - - - - - -| - - - - - - - - - - - -
-| Luis                     | Admin                    | Active
-| Ana                      | Developer                | Pending
-| Marco                    | Support                  | Disabled
+| NAME | ROLE      | REQUESTS |
+|------|-----------|----------|
+| Luis | Admin     |      125 |
+| Ana  | Developer |       42 |
 ```
 
+Hash keys form the header. Numeric columns are right-aligned automatically.
 
-## Using an Array of Hashes
 
-The most common use case is an array of hashes:
+## Supported Data
+
+### Array of hashes
 
 ```ruby
-data = [
+Termline.table([
   { engine: "Lesli", tests: 93, coverage: "98.4%" },
-  { engine: "LesliBell", tests: 41, coverage: "91.2%" },
-  { engine: "LesliAdmin", tests: 67, coverage: "95.0%" }
-]
-
-Termline.table(data)
+  { engine: "LesliBell", tests: 41, coverage: "91.2%" }
+])
 ```
 
-When the input is an array of hashes:
+Rows may omit keys. Termline uses the union of the keys and leaves missing values blank.
 
-- the first row keys are used as table headers
-- the header row is enabled by default
-- each row's values are rendered in the insertion order of its hash
-- rows should use the same keys in the same order
-
-
-
-## Using an Array of Arrays
-
-You can also pass an array of arrays:
+### Single hash
 
 ```ruby
-data = [
-  ["Luis", "Admin", "Active"],
-  ["Ana", "Developer", "Pending"],
-  ["Marco", "Support", "Disabled"]
-]
+Termline.table({ name: "Termline", version: Termline::VERSION })
+```
 
+### Array of arrays
+
+```ruby
+Termline.table([
+  ["Luis", "Admin", "Active"],
+  ["Ana", "Developer", "Pending"]
+])
+```
+
+Array rows do not generate a header. Short rows are padded with blank cells.
+
+### Active Record relation
+
+```ruby
+Termline.table(User.limit(5))
+```
+
+Relations are converted with `serializable_hash` before rendering.
+
+
+## Alignment
+
+The default `:auto` alignment keeps text on the left and places numeric columns on the right.
+
+Apply one alignment to every column:
+
+```ruby
+Termline.table(data, align: :center)
+```
+
+Or configure individual columns by key or zero-based index:
+
+```ruby
+Termline.table(
+  data,
+  align: { name: :left, role: :center, requests: :right }
+)
+```
+
+Available values are `:auto`, `:left`, `:center`, and `:right`. An array can also provide one value per column.
+
+
+## Width and Truncation
+
+Termline uses `Termline.width`, which is detected from the output terminal and falls back to 80 columns. Long cells are truncated with an ellipsis instead of overflowing:
+
+```text
+| NAME     | DESCRIPTION        |
+|----------|--------------------|
+| Termline | Human-friendly te… |
+```
+
+Override the width when rendering into a known layout:
+
+```ruby
+Termline.width = 60
 Termline.table(data)
 ```
 
-When the input is an array of arrays:
-
-- headers are automatically disabled
-- each row is rendered as plain table data
-- rows should contain the same number of values
+If there is not enough room for at least one character per column, the builder returns an empty string.
 
 
 ## Header Option
 
-Headers are enabled by default for hash-based data:
-
-```ruby
-Termline.table(data, header: true)
-```
-
-You can disable the header row manually:
+Headers are enabled for hash rows by default:
 
 ```ruby
 Termline.table(data, header: false)
 ```
 
-
-## ActiveRecord Support
-
-If the input is an `ActiveRecord::Relation`, it is automatically converted into an array of hashes using `serializable_hash`:
-
-```ruby
-users = User.limit(5)
-Termline.table(users)
-```
-
-This makes it easy to print database records directly in the terminal.
+With no header, Termline adds separators above and below the data.
 
 
-## Method Signature
+## Builder API
+
+`Termline.table` writes to the configured output and returns the rendered string. For composition without output, use the builder directly:
 
 ```ruby
-Termline.table(data, header: true)
+rendered = Termline::Table.builder(data, header: true, align: :auto)
+puts rendered
 ```
 
-### Parameters
-
-#### `data`
-Supported input types:
-
-- array of hashes
-- array of arrays
-- `ActiveRecord::Relation`
-
-#### `header`
-Controls whether the header row is displayed.
-
-Default:
-
-```ruby
-true
-```
-
-For array-based rows, headers are always disabled.
-
-## Behavior
-
-`Termline.table` automatically:
-
-- detects array-based rows
-- detects hash-based rows
-- converts ActiveRecord relations into printable hashes
-- adjusts column width based on terminal width
-- skips rendering if there is not enough space
-- skips rendering on Windows platforms
-- ignores empty collections
-
-Values wider than their calculated column are not truncated or wrapped, so keep table content concise.
-
-Internally, this method delegates to `Termline::Table.builder`, but the recommended public API is `Termline.table`.
-
-
-## Advanced Usage
-
-For most cases, `Termline.table` is the recommended API.
-
-If you need lower-level control or want to integrate directly with the internal table builder, you can call:
-
-```ruby
-Termline::Table.builder(data, header: true)
-```
-
-Example:
-
-```ruby
-data = [
-  { name: "Luis", role: "Admin", status: "Active" },
-  { name: "Ana", role: "Developer", status: "Pending" }
-]
-
-puts Termline::Table.builder(data, header: true)
-```
-
-The builder returns a string without writing to the terminal. Use it only when you need to compose or inspect the rendered table. For normal usage, prefer:
-
-```ruby
-Termline.table(data, header: true)
-```
-
-
-## Example with Application Data
-
-```ruby
-Termline.info "Available users"
-
-Termline.table([
-  { id: 1, name: "Luis", email: "luis@example.com" },
-  { id: 2, name: "Ana", email: "ana@example.com" }
-])
-```
+The implementation formats rows directly as strings and adds no runtime dependencies.

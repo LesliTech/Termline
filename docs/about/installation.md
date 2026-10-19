@@ -24,4 +24,4 @@ Verify the installation:
 Termline.success "Termline is ready"
 ```
 
-The public helpers write to `$stdout` by default. Assign another IO-compatible object to `Termline.output` when output needs to be captured or redirected. Begin with [Messages](/gems/termline/messages), then use [Lists](/gems/termline/lists), [Tables](/gems/termline/tables), and [Separators and spacing](/gems/termline/separator) as needed.
+The public helpers write to `$stdout` by default. Assign another IO-compatible object to `Termline.output` when output needs to be captured or redirected. Begin with [Messages](/gems/termline/messages), then use [Lists](/gems/termline/lists), [Tables](/gems/termline/tables), [Text components](/gems/termline/text), and [Separators and spacing](/gems/termline/separator) as needed.
