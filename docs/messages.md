@@ -161,7 +161,7 @@ Public message helpers:
 - prepend timestamps by default; semantic helpers accept `time: false`
 - optionally render icons and tags
 - support structured key-value metadata
-- print directly to STDOUT
+- write to the configured `Termline.output`, which defaults to `$stdout`
 
 Internally, these methods delegate to `Termline::Msg.builder`, but the recommended public API is to use the `Termline` shortcuts.
 

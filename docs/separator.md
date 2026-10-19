@@ -80,7 +80,7 @@ Termline.line(8)
 
 These helpers:
 
-- print directly to STDOUT
+- write to the configured `Termline.output`, which defaults to `$stdout`
 - are useful for formatting CLI output
 - provide simple visual spacing between sections
 - make terminal output easier to scan

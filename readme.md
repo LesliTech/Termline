@@ -154,13 +154,36 @@ Termline.line
 | `Termline.br` | Print blank lines |
 | `Termline.line` | Print a visual separator |
 
-Message, list, table, and spacing helpers print directly to `STDOUT`. See the focused guides for all supported options and lower-level builders:
+Message, list, table, and spacing helpers write to the configured output, which defaults to `$stdout`. See the focused guides for all supported options and lower-level builders:
 
 - [Installation](https://www.lesli.dev/gems/termline/about/installation)
 - [Messages](https://www.lesli.dev/gems/termline/messages)
 - [Lists](https://www.lesli.dev/gems/termline/lists)
 - [Tables](https://www.lesli.dev/gems/termline/tables)
 - [Separators and spacing](https://www.lesli.dev/gems/termline/separator)
+
+### Output configuration
+
+Termline writes to `$stdout` and enables ANSI styles automatically for interactive terminals. Redirect the output or override ANSI rendering when needed:
+
+```ruby
+require "stringio"
+
+buffer = StringIO.new
+Termline.output = buffer
+Termline.ansi = false
+
+Termline.success "Saved", time: false
+buffer.string # => "✔ SUCCESS: Saved\n"
+```
+
+The supported ANSI modes are `:auto`, `true`, and `false`. Automatic mode disables escape sequences when the output is not a TTY, when `TERM=dumb`, or when the `NO_COLOR` environment variable is present.
+
+The terminal width is detected when content is rendered and falls back to 80 columns. It can be overridden explicitly:
+
+```ruby
+Termline.width = 100
+```
 
 <br />
 

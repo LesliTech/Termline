@@ -169,10 +169,10 @@ items = [
   "Queue worker active"
 ]
 
-Termline::List.builder(items, color: :green, icon: :success)
+puts Termline::List.builder(items, color: :green, icon: :success)
 ```
 
-Use this only when you need full control over how the list input is passed internally. For normal usage, prefer:
+The builder returns a string without writing to the terminal. Use it only when you need to compose or inspect the rendered list. For normal usage, prefer:
 
 ```ruby
 Termline.list("Database connected", "Cache available", "Queue worker active", icon: :success, color: :green)

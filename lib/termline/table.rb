@@ -35,8 +35,8 @@ module Termline
         class << self
             def builder data, header:true
 
-                return if Gem.win_platform?
-                return unless data.size > 0
+                return "" if Gem.win_platform?
+                return "" unless data.size > 0
 
                 table_from_array = true if data.first.class == Array
                 header = false if table_from_array
@@ -47,7 +47,7 @@ module Termline
 
                 # get the available characters in terminal width
                 #terminal_width = `tput cols`.to_i
-                terminal_width = Style::WIDTH
+                terminal_width = Termline.terminal.width
 
                 # get the number of columns to print base on the data hash
                 cols = data.first.length + 1
@@ -56,7 +56,9 @@ module Termline
                 col_width = (terminal_width / cols) - 1
 
                 # validate that we have minimum space to render the table
-                return if col_width <= 0
+                return "" if col_width <= 0
+
+                lines = []
 
                 # separator for every column and row
                 separator = ('| ' << ('- ' * (col_width / 2)))
@@ -68,23 +70,24 @@ module Termline
                 if header
 
                     # print table titles
-                    puts '| ' << data.first.keys.map { |key| key.to_s.upcase.ljust(col_width) }.join('| ')
+                    lines << ('| ' << data.first.keys.map { |key| key.to_s.upcase.ljust(col_width) }.join('| '))
                 end 
 
                 # print header separators, only for visible columns
-                puts separator * (cols - 1)
+                lines << separator * (cols - 1)
 
                 # print data as table :)
                 data.each_with_index do |row, index|
 
                     # join hash values as a line and justify every value to print value in its own column
-                    puts '| ' << row.values.map { |value| value.to_s.ljust(col_width) }.join('| ') unless table_from_array
+                    lines << ('| ' << row.values.map { |value| value.to_s.ljust(col_width) }.join('| ')) unless table_from_array
 
                     # print simple value from the array data
-                    puts '| ' << row.map { |value| value.to_s.ljust(col_width) }.join('| ') if table_from_array
+                    lines << ('| ' << row.map { |value| value.to_s.ljust(col_width) }.join('| ')) if table_from_array
                 end
 
-                puts separator * (cols - 1) unless header
+                lines << separator * (cols - 1) unless header
+                lines.join("\n")
             end
         end
     end

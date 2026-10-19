@@ -34,7 +34,7 @@ module Termline
     module List 
         class << self
             def builder(items, icon:, color:)
-                items.each { |item| puts("  #{Style.colorize(Style.icon(icon), color)} #{ item }" )}
+                items.map { |item| "  #{Style.colorize(Style.icon(icon), color)} #{ item }" }.join("\n")
             end
         end
     end

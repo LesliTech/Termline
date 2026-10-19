@@ -45,6 +45,8 @@ module Termline
             end
 
             def color(color)
+                return "" unless Termline.terminal.ansi?
+
                 Style.pretty("", :black, color)
             end
         end

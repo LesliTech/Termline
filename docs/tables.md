@@ -164,10 +164,10 @@ data = [
   { name: "Ana", role: "Developer", status: "Pending" }
 ]
 
-Termline::Table.builder(data, header: true)
+puts Termline::Table.builder(data, header: true)
 ```
 
-Use this only when you need direct access to the internal builder. For normal usage, prefer:
+The builder returns a string without writing to the terminal. Use it only when you need to compose or inspect the rendered table. For normal usage, prefer:
 
 ```ruby
 Termline.table(data, header: true)

@@ -33,6 +33,7 @@ Building a better future, one line of code at a time.
 
 # ·
 require_relative "termline/version"
+require_relative "termline/terminal"
 require_relative "termline/style"
 require_relative "termline/table"
 require_relative "termline/space"
@@ -43,59 +44,96 @@ require_relative "termline/msg"
 # ·
 module Termline
     class << self
+        def terminal
+            @terminal ||= Termline::Terminal.new
+        end
+
+        def output
+            terminal.output
+        end
+
+        def output=(io)
+            terminal.output = io
+        end
+
+        def ansi
+            terminal.ansi
+        end
+
+        def ansi=(mode)
+            terminal.ansi = mode
+        end
+
+        def width
+            terminal.width
+        end
+
+        def width=(value)
+            terminal.width = value
+        end
+
         def m(*messages)
-            messages.each { |message| puts(message) }
+            write(messages.map(&:to_s).join("\n"))
         end
 
         def msg(*messages, bgcolor: :default, **data)
-            messages.each { |message| puts(Termline::Msg.builder(message, bgcolor:bgcolor, data:data)) }
+            write(messages.map { |message| Termline::Msg.builder(message, bgcolor:bgcolor, data:data) }.join("\n"))
         end
 
         def info(*messages, tag:'INFO:', icon: :info, time:true, bgcolor: :default, **data)
-            messages.each { |message| puts(Termline::Msg.builder(message, tag:tag, icon:icon, data:data, color: :blue, bgcolor:bgcolor, time:time)) }
+            write(messages.map { |message| Termline::Msg.builder(message, tag:tag, icon:icon, data:data, color: :blue, bgcolor:bgcolor, time:time) }.join("\n"))
         end
 
         def success(*messages, tag:'SUCCESS:', icon: :success, time:true, bgcolor: :default, **data)
-            messages.each { |message| puts(Termline::Msg.builder(message, tag:tag, icon:icon, data:data, color: :green, bgcolor:bgcolor, time:time)) }
+            write(messages.map { |message| Termline::Msg.builder(message, tag:tag, icon:icon, data:data, color: :green, bgcolor:bgcolor, time:time) }.join("\n"))
         end
 
         def warning(*messages, tag:'WARNING:', icon: :warning, time:true, bgcolor: :default, **data)
-            messages.each { |message| puts(Termline::Msg.builder(message, tag:tag, icon:icon, data:data, color: :yellow, bgcolor:bgcolor, time:time)) }
+            write(messages.map { |message| Termline::Msg.builder(message, tag:tag, icon:icon, data:data, color: :yellow, bgcolor:bgcolor, time:time) }.join("\n"))
         end
 
         def danger(*messages, tag:'DANGER:', icon: :error, time:true, bgcolor: :default, **data)
-            messages.each { |message| puts(Termline::Msg.builder(message, tag:tag, icon:icon, data:data, color: :red, bgcolor:bgcolor, time:time)) }
+            write(messages.map { |message| Termline::Msg.builder(message, tag:tag, icon:icon, data:data, color: :red, bgcolor:bgcolor, time:time) }.join("\n"))
         end
 
         def alert(*messages)
-            messages.each { |message| puts(Termline::Msg.alert(message)) }
+            write(messages.map { |message| Termline::Msg.alert(message) }.join("\n"))
         end
 
 
         def list(*items, color: :default, icon: :debug)
-            Termline::List.builder(items, color:color, icon:icon)
+            write(Termline::List.builder(items, color:color, icon:icon))
         end
 
 
         def table(data, header:true)
-            Termline::Table.builder(data, header:header)
+            write(Termline::Table.builder(data, header:header))
         end
 
         def br(count=1)
-            puts(Termline::Space.builder("\n", count))
+            write(Termline::Space.builder("\n", count))
         end 
 
         def line(count=8)
-            puts(Termline::Space.builder('-·-     ', count))
+            write(Termline::Space.builder('-·-     ', count))
         end
 
         def color(color)
-            puts(Termline::Space.color(color))
+            write(Termline::Space.color(color))
         end
 
 
         def deprecation(*messages, time:true, **data)
             warning(*messages, tag: 'DEPRECATED:', time:time, **data)
+        end
+
+        private
+
+        def write(content)
+            return content if content.nil? || content.empty?
+
+            output.puts(content)
+            content
         end
     end
 end

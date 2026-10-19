@@ -1,8 +1,27 @@
 # frozen_string_literal: true
 
 require "test_helper"
+require "stringio"
 
 class TestTermline < Minitest::Test
+    class TTYBuffer < StringIO
+        def tty?
+            true
+        end
+    end
+
+    def setup
+        Termline.output = nil
+        Termline.ansi = true
+        Termline.width = 80
+    end
+
+    def teardown
+        Termline.output = nil
+        Termline.ansi = :auto
+        Termline.width = nil
+    end
+
     def test_that_it_has_a_version_number
         refute_nil ::Termline::VERSION
     end
@@ -69,5 +88,94 @@ class TestTermline < Minitest::Test
         end
 
         assert_match(/\A\e\[30;41m +\e\[0m\n\z/, output)
+    end
+
+    def test_output_can_be_configured
+        buffer = StringIO.new
+        Termline.output = buffer
+        Termline.ansi = false
+
+        rendered = Termline.success("Saved", time: false)
+
+        assert_equal "✔ SUCCESS: Saved", rendered
+        assert_equal "✔ SUCCESS: Saved\n", buffer.string
+    end
+
+    def test_auto_mode_disables_ansi_for_non_tty_output
+        buffer = StringIO.new
+        Termline.output = buffer
+        Termline.ansi = :auto
+
+        Termline.info("Plain", time: false)
+
+        assert_equal "ℹ INFO: Plain\n", buffer.string
+        refute_includes buffer.string, "\e["
+    end
+
+    def test_color_bar_is_omitted_when_ansi_is_disabled
+        buffer = StringIO.new
+        Termline.output = buffer
+        Termline.ansi = false
+
+        rendered = Termline.color(:red)
+
+        assert_equal "", rendered
+        assert_empty buffer.string
+    end
+
+    def test_no_color_disables_ansi_for_tty_output
+        previous_value = ENV["NO_COLOR"]
+        had_no_color = ENV.key?("NO_COLOR")
+        ENV["NO_COLOR"] = "1"
+
+        buffer = TTYBuffer.new
+        Termline.output = buffer
+        Termline.ansi = :auto
+        Termline.warning("Plain", time: false)
+
+        assert_equal "⚠ WARNING: Plain\n", buffer.string
+    ensure
+        had_no_color ? ENV["NO_COLOR"] = previous_value : ENV.delete("NO_COLOR")
+    end
+
+    def test_list_builder_returns_text_without_printing
+        output, = capture_io do
+            @list = Termline::List.builder(["one", "two"], color: :green, icon: :success)
+        end
+
+        assert_empty output
+        assert_equal "  \e[32;49m✔\e[0m one\n  \e[32;49m✔\e[0m two", @list
+    end
+
+    def test_table_builder_returns_text_without_printing
+        output, = capture_io do
+            @table = Termline::Table.builder([{ name: "Ada", status: "Ready" }])
+        end
+
+        assert_empty output
+        assert_includes @table, "NAME"
+        assert_includes @table, "Ada"
+    end
+
+    def test_empty_table_does_not_write_a_blank_line
+        buffer = StringIO.new
+        Termline.output = buffer
+
+        rendered = Termline.table([])
+
+        assert_equal "", rendered
+        assert_empty buffer.string
+    end
+
+    def test_terminal_width_can_be_overridden
+        Termline.width = 42
+
+        assert_equal 42, Termline.width
+    end
+
+    def test_invalid_terminal_configuration_is_rejected
+        assert_raises(ArgumentError) { Termline.output = Object.new }
+        assert_raises(ArgumentError) { Termline.ansi = :sometimes }
+        assert_raises(ArgumentError) { Termline.width = 0 }
     end
 end

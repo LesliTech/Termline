@@ -68,17 +68,6 @@ module Termline
             blue: '44',
             red: '41'
         }.freeze
-    
-    
-        # calculate the console width
-        # tputcols is not available on windows
-        WIDTH = begin
-            term = ENV['TERM']
-            term ? `tput cols`.to_i : 1
-        rescue
-            1
-        end
-
         class << self 
             def icon(icon)
                 ICONS.fetch(icon) do
@@ -94,6 +83,8 @@ module Termline
                 bg_colour_code = BG_COLORS.fetch(bg_colour) do
                     raise ArgumentError, "Unknown background color: #{bg_colour.inspect}. Available background colors: #{BG_COLORS.keys.join(', ')}"
                 end
+                return text.to_s unless Termline.terminal.ansi?
+
                 return "\e[#{colour_code};#{bg_colour_code}m#{text}\e[0m"
             end
 
@@ -102,7 +93,7 @@ module Termline
                 width = 1
         
                 unless bg_colour == :default
-                    width = WIDTH - message.length - 4
+                    width = Termline.terminal.width - message.length - 4
                     width = 1 if width.negative?
                 end
         
