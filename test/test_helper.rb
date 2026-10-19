@@ -1,10 +1,25 @@
 # frozen_string_literal: true
 
 $LOAD_PATH.unshift File.expand_path("../lib", __dir__)
-require "termline"
+
+# LesliTesting uses Termline to render its reporter. Start coverage first when
+# requested so Termline's own files are observed before the reporter loads them.
+if ENV["COVERAGE"]
+    require "lesli_testing/coverage"
+
+    LesliTesting::Coverage.start(
+        "Termline",
+        profile: "gem",
+        min_coverage: 90
+    )
+end
+
+require "lesli_testing"
+LesliTesting.gem("Termline", coverage_min_coverage: 90)
 
 require "minitest/autorun"
 require "stringio"
+require "termline"
 
 class TermlineTestCase < Minitest::Test
     class TTYBuffer < StringIO

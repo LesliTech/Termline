@@ -242,6 +242,18 @@ Run the default test task from the Termline directory:
 bundle exec rake
 ```
 
+The suite uses LesliTesting for the shared Lesli reporter and coverage configuration. Coverage is opt-in:
+
+```shell
+COVERAGE=true bundle exec rake
+```
+
+Use `QUIET=true` when only the final summary and coverage report are needed:
+
+```shell
+QUIET=true COVERAGE=true bundle exec rake
+```
+
 Run the executable examples to preview the available output styles:
 
 ```shell

@@ -27,5 +27,11 @@ jobs:
       with:
         ruby-version: ${{ matrix.ruby }}
         bundler-cache: true
-    - name: Run the default task
+    - name: Run tests
+      if: matrix.ruby != '3.3'
+      run: bundle exec rake
+    - name: Run tests with coverage
+      if: matrix.ruby == '3.3'
+      env:
+        COVERAGE: 'true'
       run: bundle exec rake

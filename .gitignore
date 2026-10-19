@@ -39,6 +39,7 @@ brakeman.html
 
 # Rails development files
 /doc/
+/coverage/
 /log/*.log
 /pkg/
 /tmp/

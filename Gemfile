@@ -40,3 +40,6 @@ gemspec
 gem "rake", "~> 13.4"
 
 gem "minitest", "~> 6.0"
+
+# Shared Minitest reporter and coverage conventions for Lesli gems.
+gem "lesli_testing", "~> 1.4", require: false
