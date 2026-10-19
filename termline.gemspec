@@ -37,6 +37,7 @@ Gem::Specification.new do |spec|
     spec.name       = "termline"
     spec.version    = Termline::VERSION
     spec.platform    = Gem::Platform::RUBY
+    spec.required_ruby_version = ">= 2.7.2"
     spec.license     = "GPL-3.0-or-later"
     spec.authors     = ["The Lesli Development Team"]
     spec.email       = ["hello@lesli.tech"]
@@ -58,6 +59,6 @@ Gem::Specification.new do |spec|
     spec.metadata["documentation_uri"]  = "https://www.lesli.dev/gems/termline/"
 
     spec.files = Dir.chdir(File.expand_path(__dir__)) do
-        Dir["{lib}/**/*", "license", "readme.md"]
+        Dir["{lib}/**/*", "license.txt", "readme.md"]
     end
 end

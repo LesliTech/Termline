@@ -20,7 +20,7 @@ Termline.br
 
 Termline.success("Simple message")
 Termline.success("Message with data:", name: "Luis", last_name: "Donis", title: "Software developer")
-Termline.success("Connected", tag: "DB", adapter: "postgres", time: "12ms")
+Termline.success("Connected", tag: "DB", adapter: "postgres", duration: "12ms")
 Termline.br
 
 Termline.warning("Simple message")

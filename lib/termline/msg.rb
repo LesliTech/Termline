@@ -48,15 +48,18 @@ module Termline
                 parts << "[#{timestamp}]" if time
                 parts << Style.colorize(Style.icon(icon), color) if icon
                 parts << Style.colorize(tag, color) if tag
-                parts << message
+                parts << if bgcolor == :default
+                    message
+                else
+                    Style.colorize(message, color, bgcolor)
+                end
                 parts << data_text(data, color) if data
 
                 parts.compact.map(&:to_s).reject(&:empty?).join(" ").strip
             end
 
-            def alert message
-                puts("\e[5m#{message}\e[0m")
-                puts("\e[5m#{Style.colorize(message,:red)}\e[0m")
+            def alert(message)
+                Style.colorize(" #{message} ", :white, :red)
             end
 
             private 

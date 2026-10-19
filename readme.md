@@ -147,7 +147,8 @@ Termline.line
 | `Termline.success` | Print successful outcomes |
 | `Termline.warning` | Print warnings |
 | `Termline.danger` | Print errors or failed outcomes |
-| `Termline.alert` | Print a high-visibility blinking alert |
+| `Termline.alert` | Print a high-visibility alert |
+| `Termline.deprecation` | Print a deprecation warning |
 | `Termline.list` | Print a styled list |
 | `Termline.table` | Print arrays, hashes, or Active Record relations as a table |
 | `Termline.br` | Print blank lines |

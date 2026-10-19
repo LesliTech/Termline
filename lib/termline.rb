@@ -32,6 +32,7 @@ Building a better future, one line of code at a time.
 
 
 # ·
+require_relative "termline/version"
 require_relative "termline/style"
 require_relative "termline/table"
 require_relative "termline/space"
@@ -46,24 +47,24 @@ module Termline
             messages.each { |message| puts(message) }
         end
 
-        def msg(*messages, **data)
-            messages.each { |message| puts(Termline::Msg.builder(message, data:data)) }
+        def msg(*messages, bgcolor: :default, **data)
+            messages.each { |message| puts(Termline::Msg.builder(message, bgcolor:bgcolor, data:data)) }
         end
 
-        def info(*messages, tag:'INFO:', icon: :info, time:true, **data)
-            messages.each { |message| puts(Termline::Msg.builder(message, tag:tag, icon:icon,  data:data, color: :blue, time:time)) }
+        def info(*messages, tag:'INFO:', icon: :info, time:true, bgcolor: :default, **data)
+            messages.each { |message| puts(Termline::Msg.builder(message, tag:tag, icon:icon, data:data, color: :blue, bgcolor:bgcolor, time:time)) }
         end
 
-        def success(*messages, tag:'SUCCESS:', icon: :success, time:true, **data)
-            messages.each { |message| puts(Termline::Msg.builder(message, tag:tag, icon:icon, data:data, color: :green, time:time)) }
+        def success(*messages, tag:'SUCCESS:', icon: :success, time:true, bgcolor: :default, **data)
+            messages.each { |message| puts(Termline::Msg.builder(message, tag:tag, icon:icon, data:data, color: :green, bgcolor:bgcolor, time:time)) }
         end
 
-        def warning(*messages, tag:'WARNING:', icon: :warning, time:true, **data)
-            messages.each { |message| puts(Termline::Msg.builder(message, tag:tag, icon:icon,  data:data, color: :yellow, time:time)) }
+        def warning(*messages, tag:'WARNING:', icon: :warning, time:true, bgcolor: :default, **data)
+            messages.each { |message| puts(Termline::Msg.builder(message, tag:tag, icon:icon, data:data, color: :yellow, bgcolor:bgcolor, time:time)) }
         end
 
-        def danger(*messages, tag:'DANGER:', icon: :error, time:true, **data)
-            messages.each { |message| puts(Termline::Msg.builder(message, tag:tag, icon:icon,  data:data, color: :red, time:time)) }
+        def danger(*messages, tag:'DANGER:', icon: :error, time:true, bgcolor: :default, **data)
+            messages.each { |message| puts(Termline::Msg.builder(message, tag:tag, icon:icon, data:data, color: :red, bgcolor:bgcolor, time:time)) }
         end
 
         def alert(*messages)
@@ -89,11 +90,12 @@ module Termline
         end
 
         def color(color)
-            Termline::Space.color(count)
+            puts(Termline::Space.color(color))
         end
 
 
-        def deprecation message
+        def deprecation(*messages, time:true, **data)
+            warning(*messages, tag: 'DEPRECATED:', time:time, **data)
         end
     end
 end

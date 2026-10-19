@@ -48,19 +48,19 @@ module Termline
         # standard color palette for texts
         COLORS = { 
             skyblue: '96',
-            default: '38', 
+            default: '39',
             yellow: '1;33',
             white: '1;37', 
             green: '32',  
             black: '30', 
             gray: '90',
-            blue: '36', 
+            blue: '34',
             red: '31'
         }.freeze
     
         # standard color palette for backgrounds
         BG_COLORS = { 
-            default: '0', 
+            default: '49',
             yellow: '103', 
             white: '107', 
             green: '42', 
@@ -80,15 +80,21 @@ module Termline
         end
 
         class << self 
-            def icon icon
-                ICONS[icon]
+            def icon(icon)
+                ICONS.fetch(icon) do
+                    raise ArgumentError, "Unknown icon: #{icon.inspect}. Available icons: #{ICONS.keys.join(', ')}"
+                end
             end
 
             # Concat color to text
             def colorize(text, colour = :default, bg_colour = :default)
-                colour_code = COLORS[colour]
-                bg_colour_code = BG_COLORS[bg_colour]
-                return "\e[#{bg_colour_code};#{colour_code}m#{text}\e[0m".squeeze(';')
+                colour_code = COLORS.fetch(colour) do
+                    raise ArgumentError, "Unknown color: #{colour.inspect}. Available colors: #{COLORS.keys.join(', ')}"
+                end
+                bg_colour_code = BG_COLORS.fetch(bg_colour) do
+                    raise ArgumentError, "Unknown background color: #{bg_colour.inspect}. Available background colors: #{BG_COLORS.keys.join(', ')}"
+                end
+                return "\e[#{colour_code};#{bg_colour_code}m#{text}\e[0m"
             end
 
             # Format text

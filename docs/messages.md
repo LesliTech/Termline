@@ -3,12 +3,13 @@
 Termline includes a set of message helpers for printing structured terminal output with colors, icons, tags, timestamps, and key-value metadata.
 
 ```ruby
-Termline.msg(*messages, **data)
-Termline.info(*messages, tag: "INFO:", icon: :info, time: true, **data)
-Termline.success(*messages, tag: "SUCCESS:", icon: :success, time: true, **data)
-Termline.warning(*messages, tag: "WARNING:", icon: :warning, time: true, **data)
-Termline.danger(*messages, tag: "DANGER:", icon: :error, time: true, **data)
+Termline.msg(*messages, bgcolor: :default, **data)
+Termline.info(*messages, tag: "INFO:", icon: :info, time: true, bgcolor: :default, **data)
+Termline.success(*messages, tag: "SUCCESS:", icon: :success, time: true, bgcolor: :default, **data)
+Termline.warning(*messages, tag: "WARNING:", icon: :warning, time: true, bgcolor: :default, **data)
+Termline.danger(*messages, tag: "DANGER:", icon: :error, time: true, bgcolor: :default, **data)
 Termline.alert(*messages)
+Termline.deprecation(*messages, time: true, **data)
 ```
 
 
@@ -112,19 +113,31 @@ Use `alert` for high-visibility output:
 Termline.alert "Critical error"
 ```
 
-Each alert is printed twice: first as blinking text and then as blinking red text. Blink support depends on the terminal.
+Each alert is printed once as white text on a red background. It does not use terminal blinking.
+
+
+## Deprecation Messages
+
+Use `deprecation` to identify APIs or behavior that will be removed:
+
+```ruby
+Termline.deprecation "The old command will be removed", replacement: "new-command"
+```
+
+Deprecations use the warning style with a `DEPRECATED:` tag.
 
 
 
 ## Method Signatures
 
 ```ruby
-Termline.msg(*messages, **data)
-Termline.info(*messages, tag: "INFO:", icon: :info, time: true, **data)
-Termline.success(*messages, tag: "SUCCESS:", icon: :success, time: true, **data)
-Termline.warning(*messages, tag: "WARNING:", icon: :warning, time: true, **data)
-Termline.danger(*messages, tag: "DANGER:", icon: :error, time: true, **data)
+Termline.msg(*messages, bgcolor: :default, **data)
+Termline.info(*messages, tag: "INFO:", icon: :info, time: true, bgcolor: :default, **data)
+Termline.success(*messages, tag: "SUCCESS:", icon: :success, time: true, bgcolor: :default, **data)
+Termline.warning(*messages, tag: "WARNING:", icon: :warning, time: true, bgcolor: :default, **data)
+Termline.danger(*messages, tag: "DANGER:", icon: :error, time: true, bgcolor: :default, **data)
 Termline.alert(*messages)
+Termline.deprecation(*messages, time: true, **data)
 ```
 
 ### Parameters
@@ -135,6 +148,7 @@ Termline.alert(*messages)
 | `tag` | Optional label shown before the message. |
 | `icon` | Icon key shown before the tag. It must exist in `Termline::Style::ICONS`. |
 | `time` | Whether to include the timestamp. Defaults to `true` on semantic helpers. |
+| `bgcolor` | Optional background color from `Termline::Style::BG_COLORS`. |
 | `data` | Additional keyword arguments rendered as key-value metadata. |
 
 

@@ -44,8 +44,8 @@ module Termline
                 puts('-·-     ' * count)
             end
 
-            def color color
-                Config.pretty("", :black, color)
+            def color(color)
+                Style.pretty("", :black, color)
             end
         end
     end
