@@ -4,7 +4,7 @@ Termline provides formatted terminal output for Ruby applications, scripts, Rake
 
 ## Requirements
 
-Termline supports Ruby 2.7.2 or newer.
+Termline supports Ruby 3.3 or newer. The release workflow uses Ruby 3.3.5.
 
 Add it to the current bundle:
 

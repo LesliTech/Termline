@@ -8,8 +8,8 @@
 <br />
 
 <div align="center">
-    <a target="_blank" href="https://github.com/LesliTech/Termline/actions/workflows/master.yml">
-        <img alt="Termline test status" src="https://img.shields.io/github/actions/workflow/status/LesliTech/Termline/master.yml?branch=master&style=for-the-badge&logo=github&label=tests">
+    <a target="_blank" href="https://github.com/LesliTech/Termline/actions/workflows/lesli-ci-gem.yaml">
+        <img alt="Termline test status" src="https://img.shields.io/github/actions/workflow/status/LesliTech/Termline/lesli-ci-gem.yaml?branch=master&style=for-the-badge&logo=github&label=tests">
     </a>
     <a target="_blank" href="https://rubygems.org/gems/termline">
         <img alt="Gem Version" src="https://img.shields.io/gem/v/termline?style=for-the-badge&logo=ruby">
@@ -64,7 +64,7 @@ Termline provides:
 
 ### Requirements
 
-- Ruby 2.7.2 or newer
+- Ruby 3.3 or newer (the release workflow uses Ruby 3.3.5)
 
 Termline is framework-independent and does not require Rails.
 

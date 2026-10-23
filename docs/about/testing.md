@@ -31,4 +31,6 @@ LesliTesting uses Termline to render its reporter. For that reason, `test/test_h
 
 ## Continuous integration
 
-The GitHub Actions matrix runs the suite on Ruby 2.7.2, 3.2, and 3.3. The Ruby 3.3 job also enforces the coverage threshold, while the other jobs verify compatibility without generating duplicate reports.
+The GitHub Actions workflow runs the suite on Ruby 3.3.5 through the shared
+`lesli-ci-gem.yaml` workflow from LesliActions and enforces the configured
+coverage threshold.
